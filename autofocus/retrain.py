@@ -13,8 +13,8 @@
 # limitations under the License.
 # ==============================================================================
 # NOTICE: This work was derived from
-# tensorflow/hub/examples/image_retraining/retrain.py and modified forgit ad
-# additional logging
+# https://github.com/tensorflow/hub/blob/master/examples/image_retraining/retrain.py
+# and modified for additional logging
 
 # pylint: disable=line-too-long
 r"""Simple transfer learning with image modules from TensorFlow Hub.
