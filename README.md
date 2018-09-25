@@ -1,3 +1,8 @@
+**Caveats:**
+
+- Data-cleaning code is currently specific to a particular data set. We are aiming to generalize it over time.
+- Computer vision currently uses a lightly modified version of a script from the Tensorflow project. We are aiming to adapt it to perform better specifically for identifying animals in images from motion-activated "camera traps" over time.
+
 # Steps for Training a Camera Traps Model
 
 ## 1. preprocess_images.py
