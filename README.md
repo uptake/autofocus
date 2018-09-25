@@ -1,4 +1,4 @@
-# Steps for Training an Autofocus Model
+# Steps for Training a Camera Traps Model
 
 ## 1. preprocess_images.py
 
@@ -6,8 +6,7 @@
 
 ```bash
 python autofocus/preprocess_images.py \
---indir ~/Google\ Drive\ File\ Stream/Team\ Drives/Computer\ Vision\ \&\ GIS/autofocus_sample_data/images/ \
---outdir ~/Google\ Drive\ File\ Stream/Team\ Drives/Computer\ Vision\ \&\ GIS/autofocus_results/preprocessed_images
+--indir sample_data/images --outdir results/preprocessed_images
 ```
 
 ### Details
@@ -29,11 +28,10 @@ Find every file that is recursively contained within `indir` with one of the spe
 ### Example call
 
 ```bash
-python autofocus/clean_detections.py \
---detections ~/Google\ Drive\ File\ Stream/Team\ Drives/Computer\ Vision\ \&\ GIS/autofocus_sample_data/sample_detections.csv \
---image-dir ~/Google\ Drive\ File\ Stream/Team\ Drives/Computer\ Vision\ \&\ GIS/autofocus_results/preprocessed_images/ \
---image-properties ~/Google\ Drive\ File\ Stream/Team\ Drives/Computer\ Vision\ \&\ GIS/autofocus_results/preprocessed_images/image_properties.csv \
---outpath ~/Google\ Drive\ File\ Stream/Team\ Drives/Computer\ Vision\ \&\ GIS/autofocus_results/clean_detections.csv
+python autofocus/clean_detections.py --detections sample_data/sample_detections.csv \
+--image-dir results/preprocessed_images \
+--image-properties results/preprocessed_images/image_properties.csv \
+--outpath results/detections_clean.csv
 ```
 
 Concatenate the contents of the input detection files. Update the paths in those detection files to point to the preprocessed images in `image-dir`. Pull in the image properties from the CSV created in the previous step. Save the result.
