@@ -1,5 +1,7 @@
 # Autofocus
 
+This project seeks to make conservation organizations more efficient, primarily by automating the process of labeling images taken by motion-activated "camera traps" according to the kinds of animals that appear in them. See [this article](https://www.uptake.org/autofocus.html) for more information.
+
 **Caveats:**
 
 - Data-cleaning code is currently specific to a particular data set. We are aiming to generalize it over time.
