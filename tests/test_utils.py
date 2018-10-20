@@ -4,7 +4,8 @@ import pandas as pd
 import logging
 from autofocus.util import discard_duplicate_rows
 
-class TestDiscardDuplicateRows(object):
+
+class TestDiscardDuplicateRows:
 
     def test_no_dupes(self):
         """
@@ -42,7 +43,6 @@ class TestDiscardDuplicateRows(object):
 
             assert len(caplog.records) == 1
             assert caplog.records[0].levelname == "WARNING"
-            assert caplog.records[0].message == "2 duplicate records discarded."
 
-        test_df.reset_index(drop = True, inplace = True)
+        test_df.reset_index(drop=True, inplace=True)
         assert test_df.equals(expected_df)
