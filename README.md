@@ -2,10 +2,57 @@
 
 This project seeks to make conservation organizations more efficient, primarily by automating the process of labeling images taken by motion-activated "camera traps" according to the kinds of animals that appear in them. See [this article](https://www.uptake.org/autofocus.html) for more information.
 
-**Caveats:**
+## Quickstart
 
-- Data-cleaning code is currently specific to a particular data set. We are aiming to generalize it over time.
-- Computer vision currently uses a lightly modified version of a script from the Tensorflow project. We are aiming to adapt it to perform better specifically for identifying animals in images from motion-activated "camera traps" over time.
+### 1. Build sample dataset
+
+```bash
+python src/data/make_dataset.py --sample
+```
+
+Download a small set of labeled images for training a camera traps model using default settings.
+
+### 2. Build model
+
+```bash
+python src/models/train_model.py
+```
+
+Retrain the classifier layer of a pretrained neural network using default settings.
+
+## Deep Dive
+
+### 1. Build sample dataset
+
+#### Sample Call
+
+```bash
+python src/data/make_dataset.py --label_priority config/label_priority.txt --labelmap config/human_labelmap.json
+```
+
+Download a full set of labeled images for training a camera traps model.
+
+#### Inputs
+
+- label-priority: path to text file that specifies label priorities for files with multiple labels. Each line provides one label ordering in the format `a > b`, where a and b are labels that are expected to be present in the detections after applying the labelmap. For instance, `human > empty` means that if a file has both labels "human" and "empty", then the "empty" label should be discarded. The special symbol `*` can be used to indicate all other labels -- for instance `* > empty` indicates that "empty" should always be dropped when it is one of multiple labels. Note: these rules are applied in the order in which they are listed, which can make a difference if they contain cycles (e.g. "human > dog", "dog > empty", "empty > human"). The file `config/label_priority.txt` used here contains only the line "* > empty", so it specifies that any label takes priority over "empty," e.g. on the thought that if a file was labeled e.g. "mouse" and "empty," then it most likely contains a mouse that is difficult to spot.
+- keep-unresolved (flag): By default, any files that have multiple labels after applying any priority rules specified in `label_priority_config_path` are ignored rather than being copied multiple times, so that a classification model can be appropriately applied. If the `keep-unresolved` flag is set, then they will be copied multiple times instead, which would be appropriate for developing multiple binary classifiers, e.g. with multitask learning.
+- labelmap (optional): path to JSON file that maps labels used in input CSV labels to labels to be used for classification. For instance, the file `config/human_labelmap.json` used here maps "human" and
+ "lawn mower" to "human" and everything else to "other", yielding labels appropriate for a binary human classifier. Any labels for which a mapping is not provided will be left unchanged.
+
+
+### 2. Build model
+
+Run `python src/models/train_model.py -h` to see the options that this script provides.
+
+## Compatibility
+
+This package was developed using Python 3.6.
+
+#### References
+
+* [How to Retrain an Image Classifier for New Categories (Tensorflow)](https://www.tensorflow.org/hub/tutorials/image_retraining)
+
+---
 
 ## Steps for Training a Camera Traps Model
 
@@ -92,11 +139,3 @@ python autofocus/retrain.py --image_dir results/raccoon_symlinks
 ```
 
 Run `autofocus/retrain.py -h` for documentation. Uses MLFlow for run tracking; run `mlflow ui` to see results.
-
-## Compatibility
-
-This package was developed using Python 3.6.
-
-#### References
-
-* [How to Retrain an Image Classifier for New Categories (Tensorflow)](https://www.tensorflow.org/hub/tutorials/image_retraining)

@@ -3,7 +3,7 @@ import pytest
 import pandas as pd
 import logging
 
-from autofocus.util import discard_duplicate_rows
+from src.data.util import discard_duplicate_rows
 
 
 class TestDiscardDuplicateRows:
