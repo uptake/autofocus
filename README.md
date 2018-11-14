@@ -4,15 +4,15 @@ This project seeks to make conservation organizations more efficient, primarily 
 
 ## Quickstart
 
-### 1. Build sample dataset
+## 1. Build dataset
 
 ```bash
-python src/data/make_dataset.py --sample
+python src/data/make_dataset.py
 ```
 
-Download a small set of labeled images for training a camera traps model using default settings.
+Add the flag `--sample` to download a sample dataset just big enough to run the model. 
 
-### 2. Build model
+## 2. Build model
 
 ```bash
 python src/models/train_model.py
@@ -27,7 +27,7 @@ Retrain the classifier layer of a pretrained neural network using default settin
 #### Sample Call
 
 ```bash
-python src/data/make_dataset.py --label_priority config/label_priority.txt --labelmap config/human_labelmap.json
+python src/data/make_dataset.py --labelmap config/human_labelmap.json
 ```
 
 Download a full set of labeled images for training a camera traps model.
