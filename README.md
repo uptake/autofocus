@@ -2,9 +2,11 @@
 
 This project seeks to make conservation organizations more efficient, primarily by automating the process of labeling images taken by motion-activated "camera traps" according to the kinds of animals that appear in them. See [this article](https://www.uptake.org/autofocus.html) for more information.
 
+Data is being uploaded to `s3://autofocus`. Providing convenient ways to download a sample data set and the full data set from this location is a top priority.
+
 **Caveats:**
 
-- Data-cleaning code is currently specific to a particular data set. We are aiming to generalize it over time.
+- Data-cleaning code is currently specific to this particular data set. We are aiming to generalize it over time.
 - Computer vision currently uses a lightly modified version of a script from the Tensorflow project. We are aiming to adapt it to perform better specifically for identifying animals in images from motion-activated "camera traps" over time.
 
 ## Steps for Training a Camera Traps Model
