@@ -2,7 +2,7 @@
 
 This project seeks to make conservation organizations more efficient, primarily by automating the process of labeling images taken by motion-activated "camera traps" according to the kinds of animals that appear in them. See [this article](https://www.uptake.org/autofocus.html) for more information.
 
-Data is being uploaded to `s3://autofocus`. Providing a convenient way to download a sample data set and the full data set from this location are top priorities.
+Data is being uploaded to `s3://autofocus`. Providing convenient ways to download a sample data set and the full data set from this location is a top priority.
 
 **Caveats:**
 
