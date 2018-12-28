@@ -39,7 +39,7 @@ WARNING: This dataset is over 80 GB.
 
 ```bash
 python autofocus/preprocess_images.py \
---indir data/images_2016 --outdir results/preprocessed_images
+--indir data/lpz_data/images_2016 --outdir results/preprocessed_images
 ```
 
 #### Details
@@ -61,7 +61,7 @@ Find every file that is recursively contained within `indir` with one of the spe
 #### Example call
 
 ```bash
-python autofocus/clean_detections.py --detections data/detections_2016.csv \
+python autofocus/clean_detections.py --detections data/lpz_data/detections_2016.csv \
 --image-dir results/preprocessed_images \
 --image-properties results/preprocessed_images/image_properties.csv \
 --outpath results/detections_clean.csv
