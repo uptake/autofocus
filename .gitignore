@@ -87,3 +87,6 @@ ENV/
 
 # PyCharm project settings
 .idea
+
+# macOS stuff
+.DS_Store
