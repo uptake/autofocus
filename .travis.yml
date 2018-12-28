@@ -1,0 +1,30 @@
+
+# Stuff shared by all builds
+install:
+  - python setup.py install
+script:
+  - python -m pytest
+
+matrix:
+  include:
+    
+    - language: python
+      os: linux
+      python: 3.6
+    
+    # This is actually a py3.6 + Mac OSX build (with conda).
+    # The mac + python version pairings for Travis are weird,
+    # and as of this writing 3.6 isn't supported. For more, see
+    # https://docs.travis-ci.com/user/multi-os/#python-example-unsupported-languages
+    - os: osx
+      language: generic
+      before_install:
+        - wget https://repo.continuum.io/miniconda/Miniconda3-4.3.21-MacOSX-x86_64.sh -O miniconda.sh
+        - bash miniconda.sh -b -p $HOME/miniconda
+        - export PATH="$HOME/miniconda/bin:$PATH"
+        - hash -r
+        - conda config --set always_yes yes --set changeps1 no
+        - conda update -q conda
+        - conda info -a
+        - conda create -q -n testenv python=3.6.1 nose pytest
+        - source activate testenv
