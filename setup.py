@@ -10,7 +10,7 @@ regular_packages = [
     'mlflow',
     'pandas',
     'pillow',
-    'psutil'
+    'psutil',
     'tensorflow',
     'tensorflow_hub'
 ]
@@ -32,7 +32,7 @@ setuptools.setup(
 
     packages=setuptools.find_packages(),
     test_suite='tests',
-    
+
     install_requires=regular_packages,
     extras_require={
         'testing': testing_packages + regular_packages
