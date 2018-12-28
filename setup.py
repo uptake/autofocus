@@ -1,7 +1,21 @@
 import setuptools
 
-with open('README.md', 'r') as f:
+with open("README.md", "r") as f:
     my_long_description = f.read()
+
+
+documentation_packages = []
+regular_packages = [
+    "click",
+    "mlflow",
+    "pandas",
+    "pillow",
+    "tensorflow",
+    "tensorflow_hub"
+]
+testing_packages = [
+    "pytest"
+]
 
 setuptools.setup(
     name="autofocus",
@@ -15,6 +29,10 @@ setuptools.setup(
     long_description=my_long_description,
 
     packages=setuptools.find_packages(),
+    test_suite="tests",
 
-    install_requires=['click', 'mlflow', 'pandas', 'pillow', 'tensorflow', 'tensorflow_hub']
+    install_requires=regular_packages,
+    extras_require={
+        "testing": testing_packages + regular_packages
+    }
 )

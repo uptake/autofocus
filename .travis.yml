@@ -1,0 +1,9 @@
+language: python
+os:
+  - linux
+python: 3.5
+install:
+  - python setup.py install --user
+
+script:
+  - python -m pytest
