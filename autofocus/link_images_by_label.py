@@ -4,7 +4,6 @@ import argparse
 import json
 import logging
 import os
-import psutil
 import time
 
 from pathlib import Path
@@ -14,7 +13,7 @@ import pandas as pd
 
 from tqdm import tqdm
 
-from autofocus.util import discard_duplicate_rows
+from autofocus.util import _log_memory, discard_duplicate_rows
 
 
 def main(detections_path: str,
@@ -299,17 +298,6 @@ def _parse_args() -> dict:
     args = vars(parser.parse_args())
     logging.info(f'Arguments passed at command line: {args}')
     return args
-
-
-def _log_memory() -> None:
-    memory = psutil.virtual_memory()
-    logging.info(f'Memory total:  {_convert_to_gb(memory.total)} GB')
-    logging.info(f'Memory used:  {_convert_to_gb(memory.used)} GB')
-    logging.info(f'Memory available:  {_convert_to_gb(memory.available)} GB')
-
-
-def _convert_to_gb(bytes: float) -> float:
-    return round(bytes / (2 ** 30), 2)
 
 
 if __name__ == '__main__':

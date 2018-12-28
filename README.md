@@ -11,6 +11,26 @@ Data is being uploaded to `s3://autofocus`. Providing convenient ways to downloa
 
 ## Steps for Training a Camera Traps Model
 
+### 0. download_images.py
+
+#### Example call
+```bash
+python autofocus/download_images.py --local_folder local_dir --bucket autofocus
+```
+
+#### Details
+Downloads all images from an S3 bucket and keeps subdirectory structure intact.
+
+#### Inputs
+
+- local-folder: path to save files to locally
+- bucket: S3 bucket to copy locally
+- download-tar: Flag of whether to download tar files. 
+
+#### Output
+
+`local_folder` with files and structure copied from S3
+
 ### 1. preprocess_images.py
 
 #### Example call
