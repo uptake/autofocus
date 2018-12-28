@@ -39,6 +39,7 @@ nosetests.xml
 coverage.xml
 *,cover
 .hypothesis/
+.pytest_cache/
 
 # Translations
 *.mo
@@ -88,5 +89,5 @@ ENV/
 # PyCharm project settings
 .idea
 
-# macOS stuff
+# Apple
 .DS_Store

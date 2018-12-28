@@ -3,7 +3,6 @@
 import argparse
 import logging
 import os
-import psutil
 import time
 
 from collections import defaultdict
@@ -20,7 +19,7 @@ from PIL import Image
 from PIL.ExifTags import TAGS
 from tqdm import tqdm
 
-from src.data.util import write_csv
+from src.data.util import _log_memory, write_csv
 
 
 MAX_FOOTER_LENGTH = 198
@@ -211,17 +210,6 @@ def _parse_args() -> dict:
     args = vars(parser.parse_args())
     logging.info(f'Arguments pass at command line: {args}')
     return args
-
-
-def _log_memory() -> None:
-    memory = psutil.virtual_memory()
-    logging.info(f'Memory total:  {_convert_to_gb(memory.total)} GB')
-    logging.info(f'Memory used:  {_convert_to_gb(memory.used)} GB')
-    logging.info(f'Memory available:  {_convert_to_gb(memory.available)} GB')
-
-
-def _convert_to_gb(bytes: float) -> float:
-    return round(bytes / (2**30), 2)
 
 
 if __name__ == '__main__':

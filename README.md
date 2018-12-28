@@ -2,17 +2,22 @@
 
 This project seeks to make conservation organizations more efficient, primarily by automating the process of labeling images taken by motion-activated "camera traps" according to the kinds of animals that appear in them. See [this article](https://www.uptake.org/autofocus.html) for more information.
 
+Data is being uploaded to `s3://autofocus`. Providing convenient ways to download a sample data set and the full data set from this location is a top priority.
+
+**Caveats:**
+
+- Data-cleaning code is currently specific to this particular data set. We are aiming to generalize it over time.
+- Computer vision currently uses a lightly modified version of a script from the Tensorflow project. We are aiming to adapt it to perform better specifically for identifying animals in images from motion-activated "camera traps" over time.
+
 ## Quickstart
 
-## 1. Build dataset
+### 1. Build dataset
 
 ```bash
-python src/data/make_dataset.py
+python src/data/make_dataset.py --sample
 ```
 
-Add the flag `--sample` to download a sample dataset just big enough to run the model. 
-
-## 2. Build model
+### 2. Build model
 
 ```bash
 python src/models/train_model.py
@@ -22,39 +27,27 @@ Retrain the classifier layer of a pretrained neural network using default settin
 
 ## Deep Dive
 
-### 1. Build sample dataset
+### 0. download_images.py
 
-#### Sample Call
-
+#### Example call
 ```bash
-python src/data/make_dataset.py --labelmap config/human_labelmap.json
+python autofocus/download_images.py \
+--local_folder data --bucket autofocus
 ```
 
-Download a full set of labeled images for training a camera traps model.
+#### Details
+Downloads all images from an S3 bucket and keeps subdirectory structure intact.
+WARNING: This dataset is over 80 GB.
 
 #### Inputs
 
-- label-priority: path to text file that specifies label priorities for files with multiple labels. Each line provides one label ordering in the format `a > b`, where a and b are labels that are expected to be present in the detections after applying the labelmap. For instance, `human > empty` means that if a file has both labels "human" and "empty", then the "empty" label should be discarded. The special symbol `*` can be used to indicate all other labels -- for instance `* > empty` indicates that "empty" should always be dropped when it is one of multiple labels. Note: these rules are applied in the order in which they are listed, which can make a difference if they contain cycles (e.g. "human > dog", "dog > empty", "empty > human"). The file `config/label_priority.txt` used here contains only the line "* > empty", so it specifies that any label takes priority over "empty," e.g. on the thought that if a file was labeled e.g. "mouse" and "empty," then it most likely contains a mouse that is difficult to spot.
-- keep-unresolved (flag): By default, any files that have multiple labels after applying any priority rules specified in `label_priority_config_path` are ignored rather than being copied multiple times, so that a classification model can be appropriately applied. If the `keep-unresolved` flag is set, then they will be copied multiple times instead, which would be appropriate for developing multiple binary classifiers, e.g. with multitask learning.
-- labelmap (optional): path to JSON file that maps labels used in input CSV labels to labels to be used for classification. For instance, the file `config/human_labelmap.json` used here maps "human" and
- "lawn mower" to "human" and everything else to "other", yielding labels appropriate for a binary human classifier. Any labels for which a mapping is not provided will be left unchanged.
+- local-folder: path to save files to locally
+- bucket: S3 bucket to copy locally
+- download-tar: Flag of whether to download tar files. 
 
+#### Output
 
-### 2. Build model
-
-Run `python src/models/train_model.py -h` to see the options that this script provides.
-
-## Compatibility
-
-This package was developed using Python 3.6.
-
-#### References
-
-* [How to Retrain an Image Classifier for New Categories (Tensorflow)](https://www.tensorflow.org/hub/tutorials/image_retraining)
-
----
-
-## Steps for Training a Camera Traps Model
+`data` with files and structure copied from S3
 
 ### 1. preprocess_images.py
 
@@ -62,7 +55,7 @@ This package was developed using Python 3.6.
 
 ```bash
 python autofocus/preprocess_images.py \
---indir sample_data/images --outdir results/preprocessed_images
+--indir data/lpz_data/images_2016 --outdir results/preprocessed_images
 ```
 
 #### Details
@@ -84,7 +77,7 @@ Find every file that is recursively contained within `indir` with one of the spe
 #### Example call
 
 ```bash
-python autofocus/clean_detections.py --detections sample_data/sample_detections.csv \
+python autofocus/clean_detections.py --detections data/lpz_data/detections_2016.csv \
 --image-dir results/preprocessed_images \
 --image-properties results/preprocessed_images/image_properties.csv \
 --outpath results/detections_clean.csv
@@ -139,3 +132,11 @@ python autofocus/retrain.py --image_dir results/raccoon_symlinks
 ```
 
 Run `autofocus/retrain.py -h` for documentation. Uses MLFlow for run tracking; run `mlflow ui` to see results.
+
+## Compatibility
+
+This package was developed using Python 3.6.
+
+#### References
+
+* [How to Retrain an Image Classifier for New Categories (Tensorflow)](https://www.tensorflow.org/hub/tutorials/image_retraining)
