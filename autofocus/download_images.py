@@ -64,7 +64,7 @@ def download_s3_bucket(
             for file in result.get('Contents'):
                 key = file.get('Key')
                 local_path = local_folder + os.sep + key
-                if 'tar.gzip' in key and not download_tar:
+                if 'tar.gz' in key and not download_tar:
                     print('Skipping tar file: {}'.format(key))
                     pass
                 if not os.path.exists(os.path.dirname(local_path)):
