@@ -15,11 +15,13 @@ Data is being uploaded to `s3://autofocus`. Providing convenient ways to downloa
 
 #### Example call
 ```bash
-python autofocus/download_images.py --local_folder local_dir --bucket autofocus
+python autofocus/download_images.py \
+--local_folder data --bucket autofocus
 ```
 
 #### Details
 Downloads all images from an S3 bucket and keeps subdirectory structure intact.
+WARNING: This dataset is over 80 GB.
 
 #### Inputs
 
@@ -29,7 +31,7 @@ Downloads all images from an S3 bucket and keeps subdirectory structure intact.
 
 #### Output
 
-`local_folder` with files and structure copied from S3
+`data` with files and structure copied from S3
 
 ### 1. preprocess_images.py
 
@@ -37,7 +39,7 @@ Downloads all images from an S3 bucket and keeps subdirectory structure intact.
 
 ```bash
 python autofocus/preprocess_images.py \
---indir sample_data/images --outdir results/preprocessed_images
+--indir data/images_2016 --outdir results/preprocessed_images
 ```
 
 #### Details
@@ -59,7 +61,7 @@ Find every file that is recursively contained within `indir` with one of the spe
 #### Example call
 
 ```bash
-python autofocus/clean_detections.py --detections sample_data/sample_detections.csv \
+python autofocus/clean_detections.py --detections data/detections_2016.csv \
 --image-dir results/preprocessed_images \
 --image-properties results/preprocessed_images/image_properties.csv \
 --outpath results/detections_clean.csv
