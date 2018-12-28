@@ -88,3 +88,6 @@ ENV/
 
 # PyCharm project settings
 .idea
+
+# Apple
+.DS_Store

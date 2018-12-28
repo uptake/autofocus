@@ -11,13 +11,35 @@ Data is being uploaded to `s3://autofocus`. Providing convenient ways to downloa
 
 ## Steps for Training a Camera Traps Model
 
+### 0. download_images.py
+
+#### Example call
+```bash
+python autofocus/download_images.py \
+--local_folder data --bucket autofocus
+```
+
+#### Details
+Downloads all images from an S3 bucket and keeps subdirectory structure intact.
+WARNING: This dataset is over 80 GB.
+
+#### Inputs
+
+- local-folder: path to save files to locally
+- bucket: S3 bucket to copy locally
+- download-tar: Flag of whether to download tar files. 
+
+#### Output
+
+`data` with files and structure copied from S3
+
 ### 1. preprocess_images.py
 
 #### Example call
 
 ```bash
 python autofocus/preprocess_images.py \
---indir sample_data/images --outdir results/preprocessed_images
+--indir data/lpz_data/images_2016 --outdir results/preprocessed_images
 ```
 
 #### Details
@@ -39,7 +61,7 @@ Find every file that is recursively contained within `indir` with one of the spe
 #### Example call
 
 ```bash
-python autofocus/clean_detections.py --detections sample_data/sample_detections.csv \
+python autofocus/clean_detections.py --detections data/lpz_data/detections_2016.csv \
 --image-dir results/preprocessed_images \
 --image-properties results/preprocessed_images/image_properties.csv \
 --outpath results/detections_clean.csv
