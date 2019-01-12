@@ -4,6 +4,9 @@ import os
 import pandas as pd
 
 
+def add_dataset
+
+
 def write_csv(df: pd.DataFrame, outpath) -> None:
     """Write a DataFrame to CSV, creating the output directory if
     necessary.

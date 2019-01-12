@@ -16,5 +16,5 @@ setuptools.setup(
 
     packages=setuptools.find_packages(),
 
-    install_requires=['click', 'mlflow', 'pandas', 'pillow', 'tensorflow', 'tensorflow_hub']
+    install_requires=[`'mlflow', 'pandas', 'pillow', 'tensorflow', 'tensorflow_hub']
 )
