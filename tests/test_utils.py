@@ -1,10 +1,12 @@
 import pytest
 
-
 import pandas as pd
-from autofocus.util import discard_duplicate_rows
+import logging
 
-class TestDiscardDuplicateRows(object):
+from src.data.util import discard_duplicate_rows
+
+
+class TestDiscardDuplicateRows:
 
     def test_no_dupes(self):
         """
@@ -37,11 +39,11 @@ class TestDiscardDuplicateRows(object):
             "bears": [0., 1., 3.14]
         })
 
-        discard_duplicate_rows(test_df)
+        with caplog.at_level(logging.WARNING):
+            discard_duplicate_rows(test_df)
 
-        assert len(caplog.records) == 1
-        assert caplog.records[0].levelname == "WARNING"
-        assert caplog.records[0].message == "2 duplicate records discarded."
+            assert len(caplog.records) == 1
+            assert caplog.records[0].levelname == "WARNING"
 
-        test_df.reset_index(drop = True, inplace = True)
+        test_df.reset_index(drop=True, inplace=True)
         assert test_df.equals(expected_df)

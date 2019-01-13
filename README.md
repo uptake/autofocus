@@ -2,12 +2,52 @@
 
 This project seeks to make conservation organizations more efficient, primarily by automating the process of labeling images taken by motion-activated "camera traps" according to the kinds of animals that appear in them. See [this article](https://www.uptake.org/autofocus.html) for more information.
 
+Data is being uploaded to `s3://autofocus`. Providing convenient ways to download a sample data set and the full data set from this location is a top priority.
+
 **Caveats:**
 
-- Data-cleaning code is currently specific to a particular data set. We are aiming to generalize it over time.
+- Data-cleaning code is currently specific to this particular data set. We are aiming to generalize it over time.
 - Computer vision currently uses a lightly modified version of a script from the Tensorflow project. We are aiming to adapt it to perform better specifically for identifying animals in images from motion-activated "camera traps" over time.
 
-## Steps for Training a Camera Traps Model
+## Quickstart
+
+### 1. Build dataset
+
+```bash
+python src/data/make_dataset.py --sample
+```
+
+### 2. Build model
+
+```bash
+python src/models/train_model.py
+```
+
+Retrain the classifier layer of a pretrained neural network using default settings.
+
+## Deep Dive
+
+### 0. download_images.py
+
+#### Example call
+```bash
+python autofocus/download_images.py \
+--local_folder data --bucket autofocus
+```
+
+#### Details
+Downloads all images from an S3 bucket and keeps subdirectory structure intact.
+WARNING: This dataset is over 80 GB.
+
+#### Inputs
+
+- local-folder: path to save files to locally
+- bucket: S3 bucket to copy locally
+- download-tar: Flag of whether to download tar files. 
+
+#### Output
+
+`data` with files and structure copied from S3
 
 ### 1. preprocess_images.py
 
@@ -15,7 +55,7 @@ This project seeks to make conservation organizations more efficient, primarily 
 
 ```bash
 python autofocus/preprocess_images.py \
---indir sample_data/images --outdir results/preprocessed_images
+--indir data/lpz_data/images_2016 --outdir results/preprocessed_images
 ```
 
 #### Details
@@ -37,7 +77,7 @@ Find every file that is recursively contained within `indir` with one of the spe
 #### Example call
 
 ```bash
-python autofocus/clean_detections.py --detections sample_data/sample_detections.csv \
+python autofocus/clean_detections.py --detections data/lpz_data/detections_2016.csv \
 --image-dir results/preprocessed_images \
 --image-properties results/preprocessed_images/image_properties.csv \
 --outpath results/detections_clean.csv

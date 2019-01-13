@@ -1,0 +1,11 @@
+# local package
+-e .
+
+# external requirements
+flake8
+mlflow
+pandas
+pillow
+opencv-contrib-python
+tensorflow
+tensorflow_hub
