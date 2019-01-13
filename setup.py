@@ -22,7 +22,7 @@ setuptools.setup(
     name='autofocus',
     version='0.2.0',
     url='https://github.com/UptakeOpenSource/autofocus',
-    python_requires='>=3.6.0',
+    python_requires='>=3.7.0',
 
     author='Greg Gandenberger',
     author_email='gsganden@gmail.com',
