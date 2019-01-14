@@ -29,7 +29,7 @@ class DownloadProgressPercentage:
             self._seen_so_far += bytes_amount
             percentage = (self._seen_so_far / self._size) * 100
             sys.stdout.write(
-                f'\rDownloading {self._key}  {self._seen_so_far} / {self._size}  ({percentage:.2f}%)'
+                f'\rProgress: {self._seen_so_far} / {self._size}  ({percentage:.2f}%)'
             )
             sys.stdout.flush()
 

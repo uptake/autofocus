@@ -14,6 +14,7 @@ def main(dataset: str) -> None:
     else:
         raise NotImplementedError
 
+    logging.info(f'Downloading {dataset} to {data.local_archive_path}')
     data.download()
 
     logging.info(f'Extracting dataset')
