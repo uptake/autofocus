@@ -7,19 +7,28 @@ import sys
 import time
 
 
+sys.path.insert(0, str(Path(__file__).parents[1]))
+
+
 DATASETS = ['lpz_2016_2017', 'lpz_2012-2014', 'lpz_2018']
 
 
 def main(dataset: str) -> None:
     if dataset == 'lpz_2016_2017':
-        sys.path.insert(0, str(Path(__file__).parents[1]))
-        from datasets import LPZData_2016_2017
+        from datasets import lpz_data_2016_2017
 
-        data = LPZData_2016_2017()
+        data = lpz_data_2016_2017
     else:
         raise NotImplementedError
 
     data.download()
+
+    logging.info(f'Extracting dataset')
+    data.extract()
+
+    logging.info('Deleting archive')
+    data.local_archive_path.unlink()
+
 
 
 def _parse_args() -> dict:

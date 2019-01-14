@@ -2,6 +2,7 @@ from dataclasses import dataclass
 import os
 from pathlib import Path
 import sys
+import tarfile
 import threading
 from typing import Callable
 
@@ -38,24 +39,28 @@ class Dataset:
         raise NotImplementedError
 
 
+@dataclass
 class S3Dataset(Dataset):
     s3_bucket: str
     s3_key: str
-    s3: Callable
+
+    def __post_init__(self):
+        self.local_archive_path = self.local_dir / os.path.basename(self.s3_key)
 
     def download(self):
-        outpath = self.local_dir/os.path.basename(self.s3_key)
         self._seen_so_far = 0
 
         if not self.local_dir.is_dir():
             os.makedirs(self.local_dir)
 
-        progress = DownloadProgressPercentage(self.s3, self.s3_bucket, self.s3_key)
+        s3_client = boto3.resource('s3')
+
+        progress = DownloadProgressPercentage(s3_client, self.s3_bucket, self.s3_key)
 
         try:
-            self.s3.Bucket(self.s3_bucket).download_file(
+            s3_client.Bucket(self.s3_bucket).download_file(
                 Key=self.s3_key,
-                Filename=str(outpath),
+                Filename=str(self.local_archive_path),
                 Callback=progress,
             )
         except botocore.exceptions.ClientError as e:
@@ -64,10 +69,19 @@ class S3Dataset(Dataset):
             else:
                 raise
 
+    def extract(self):
+        if not os.path.isfile(self.local_archive_path):
+            raise FileNotFoundError(
+                f'Dataset archive is not available at {self.local_archive_path}.'
+                f'Run `download` method before `extract`.'
+            )
+        else:
+            with tarfile.open(self.local_archive_path) as archive:
+                archive.extractall()
 
-class LPZData_2016_2017(S3Dataset):
-    def __init__(self):
-        self.local_dir = DATA_DIR/'lpz'
-        self.s3_bucket = 'autofocus'
-        self.s3_key = 'lpz_data/data_2016_2017.tar.gz'
-        self.s3 = boto3.resource('s3')
+
+lpz_data_2016_2017 = S3Dataset(
+    local_dir=DATA_DIR/'lpz',
+    s3_bucket='autofocus',
+    s3_key='lpz_data/data_2016_2017.tar.gz',
+)
