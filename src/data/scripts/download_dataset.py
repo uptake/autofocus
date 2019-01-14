@@ -40,7 +40,7 @@ def _parse_args() -> dict:
     """
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('dataset',
-                        nargs=1,
+                        nargs='?',
                         type=str,
                         default='lpz_2016_2017',
                         choices=DATASETS
