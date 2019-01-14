@@ -1,30 +1,49 @@
-# -*- coding: utf-8 -*-
-import click
+"""Do all steps to download and preprocess dataset"""
+import argparse
 import logging
 from pathlib import Path
-from dotenv import find_dotenv, load_dotenv
+import sys
+import time
 
 
-@click.command()
-@click.argument('input_filepath', type=click.Path(exists=True))
-@click.argument('output_filepath', type=click.Path())
-def main(input_filepath, output_filepath):
-    """ Runs data processing scripts to turn raw data from (../raw) into
-        cleaned data ready to be analyzed (saved in ../processed).
+from download_dataset import main as download_dataset
+
+sys.path.insert(0, str(Path(__file__).parents[1]))
+from datasets import DATASETS
+
+
+def main(dataset: str) -> None:
+    download_dataset(dataset)
+
+
+def _parse_args() -> dict:
+    """Parse command-line arguments, and log them with level INFO.
+
+    Also provides file docstring as description for --help/-h.
+
+    Returns:
+        Command-line argument names and values as keys and values of a
+            Python dictionary
     """
-    logger = logging.getLogger(__name__)
-    logger.info('making final data set from raw data')
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('dataset',
+                        nargs='?',
+                        type=str,
+                        default='lpz_2016_2017',
+                        choices=DATASETS
+                        )
+    args = vars(parser.parse_args())
+    logging.info(f'Arguments passed at command line: {args}')
+    return args
 
 
 if __name__ == '__main__':
-    log_fmt = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-    logging.basicConfig(level=logging.INFO, format=log_fmt)
+    start_time = time.time()
+    logging.basicConfig(format='%(levelname)s %(asctime)s %(message)s')
+    logging.getLogger().setLevel(logging.INFO)
+    args_dict = _parse_args()
 
-    # not used in this stub but often useful for finding various files
-    project_dir = Path(__file__).resolve().parents[2]
+    main(**args_dict)
 
-    # find .env automagically by walking up directories until it's found, then
-    # load up the .env entries as environment variables
-    load_dotenv(find_dotenv())
-
-    main()
+    end_time = time.time()
+    logging.info(f'Completed in {round(end_time - start_time, 2)} seconds')

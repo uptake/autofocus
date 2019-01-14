@@ -8,8 +8,7 @@ import time
 
 sys.path.insert(0, str(Path(__file__).parents[1]))
 
-
-DATASETS = ['lpz_2016_2017']
+from datasets import DATASETS
 
 
 def main(dataset: str) -> None:

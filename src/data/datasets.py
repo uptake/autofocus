@@ -14,6 +14,9 @@ REPO_DIR = Path(__file__).resolve().parents[2]
 DATA_DIR = REPO_DIR/'data'
 
 
+DATASETS = ['lpz_2016_2017']
+
+
 class DownloadProgressPercentage:
     def __init__(self, client, bucket, key):
         self._key = key
