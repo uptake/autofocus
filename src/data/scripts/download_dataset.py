@@ -1,5 +1,4 @@
-"""Download dataset
-"""
+"""Download dataset"""
 import argparse
 import logging
 from pathlib import Path
@@ -10,7 +9,7 @@ import time
 sys.path.insert(0, str(Path(__file__).parents[1]))
 
 
-DATASETS = ['lpz_2016_2017', 'lpz_2012-2014', 'lpz_2018']
+DATASETS = ['lpz_2016_2017']
 
 
 def main(dataset: str) -> None:
@@ -30,7 +29,6 @@ def main(dataset: str) -> None:
     data.local_archive_path.unlink()
 
 
-
 def _parse_args() -> dict:
     """Parse command-line arguments, and log them with level INFO.
 
@@ -41,7 +39,12 @@ def _parse_args() -> dict:
             Python dictionary
     """
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--dataset', '-d', type=str, help='Dataset', default='lpz_2016_2017', choices=DATASETS)
+    parser.add_argument('dataset',
+                        nargs=1,
+                        type=str,
+                        default='lpz_2016_2017',
+                        choices=DATASETS
+                        )
     args = vars(parser.parse_args())
     logging.info(f'Arguments passed at command line: {args}')
     return args
