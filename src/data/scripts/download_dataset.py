@@ -5,10 +5,8 @@ from pathlib import Path
 import sys
 import time
 
-
 sys.path.insert(0, str(Path(__file__).parents[1]))
-
-from datasets import DATASETS
+from datasets import DATASETS  # noqa: 402
 
 
 def main(dataset: str) -> None:

@@ -5,11 +5,10 @@ from pathlib import Path
 import sys
 import time
 
-
 from download_dataset import main as download_dataset
 
 sys.path.insert(0, str(Path(__file__).parents[1]))
-from datasets import DATASETS
+from datasets import DATASETS # noqa: 402
 
 
 def main(dataset: str) -> None:

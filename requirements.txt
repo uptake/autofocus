@@ -2,6 +2,7 @@
 boto3
 flake8
 mlflow
+opencv-contrib-python
 pandas
 pillow
-opencv-contrib-python
+tqdm
