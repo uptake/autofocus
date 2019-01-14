@@ -1,18 +1,25 @@
-"""Download datasets
+"""Download dataset
 """
 import argparse
 import logging
+from pathlib import Path
+import sys
 import time
 
 
-def main():
-    """TK
+DATASETS = ['lpz_2016_2017', 'lpz_2012-2014', 'lpz_2018']
 
-    Args: TK
 
-    Returns: TK
-    """
-    pass
+def main(dataset: str) -> None:
+    if dataset == 'lpz_2016_2017':
+        sys.path.insert(0, str(Path(__file__).parents[1]))
+        from datasets import LPZData_2016_2017
+
+        data = LPZData_2016_2017()
+    else:
+        raise NotImplementedError
+
+    data.download()
 
 
 def _parse_args() -> dict:
@@ -25,12 +32,7 @@ def _parse_args() -> dict:
             Python dictionary
     """
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--dataset', '-d', type=str, help='Dataset', default='2016_2017', choices=DATASETS)
-    # parser.add_argument('bar',
-    #                     nargs='*',
-    #                     help='Variable-length positional argument',
-    #                     )
-    # parser.add_argument('--baz', action='store_true', help='Flag argument')
+    parser.add_argument('--dataset', '-d', type=str, help='Dataset', default='lpz_2016_2017', choices=DATASETS)
     args = vars(parser.parse_args())
     logging.info(f'Arguments passed at command line: {args}')
     return args

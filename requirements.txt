@@ -1,11 +1,7 @@
-# local package
--e .
-
 # external requirements
+boto3
 flake8
 mlflow
 pandas
 pillow
 opencv-contrib-python
-tensorflow
-tensorflow_hub

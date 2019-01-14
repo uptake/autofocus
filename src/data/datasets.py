@@ -1,6 +1,4 @@
-from boto3.s3.transfer import S3Transfer
 from dataclasses import dataclass
-import logging
 import os
 from pathlib import Path
 import sys
@@ -27,9 +25,8 @@ class DownloadProgressPercentage:
             self._seen_so_far += bytes_amount
             percentage = (self._seen_so_far / self._size) * 100
             sys.stdout.write(
-                "\r%s  %s / %s  (%.2f%%)" % (
-                    self._key, self._seen_so_far, self._size,
-                    percentage))
+                f'\rDownloading {self._key}  {self._seen_so_far} / {self._size}  ({percentage:.2f}%)'
+            )
             sys.stdout.flush()
 
 
@@ -41,7 +38,6 @@ class Dataset:
         raise NotImplementedError
 
 
-@dataclass
 class S3Dataset(Dataset):
     s3_bucket: str
     s3_key: str
@@ -54,9 +50,9 @@ class S3Dataset(Dataset):
         if not self.local_dir.is_dir():
             os.makedirs(self.local_dir)
 
-        try:
-            progress = DownloadProgressPercentage(self.s3, self.s3_bucket, self.s3_key)
+        progress = DownloadProgressPercentage(self.s3, self.s3_bucket, self.s3_key)
 
+        try:
             self.s3.Bucket(self.s3_bucket).download_file(
                 Key=self.s3_key,
                 Filename=str(outpath),
@@ -75,11 +71,3 @@ class LPZData_2016_2017(S3Dataset):
         self.s3_bucket = 'autofocus'
         self.s3_key = 'lpz_data/data_2016_2017.tar.gz'
         self.s3 = boto3.resource('s3')
-
-
-if __name__ == '__main__':
-    logging.basicConfig(format='%(levelname)s %(asctime)s %(message)s')
-    logging.getLogger().setLevel(logging.INFO)
-
-    data = LPZData_2016_2017()
-    data.download()
