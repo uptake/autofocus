@@ -17,11 +17,8 @@ def main(dataset: str) -> None:
     logging.info(f'Downloading {dataset} to {data.local_archive_path}')
     data.download()
 
-    logging.info(f'Extracting dataset')
+    logging.info(f'Extracting dataset to {data.local_archive_path.parent}')
     data.extract()
-
-    logging.info('Deleting archive')
-    data.local_archive_path.unlink()
 
 
 def _parse_args() -> dict:

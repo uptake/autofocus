@@ -82,7 +82,7 @@ class S3Dataset(Dataset):
             with tarfile.open(self.local_archive_path) as archive:
                 members = archive.getmembers()
                 for item in tqdm(iterable=members, total=len(members)):
-                    archive.extract(member=item)
+                    archive.extract(member=item, path=self.local_archive_path.parent)
 
 
 lpz_data_2016_2017 = S3Dataset(
