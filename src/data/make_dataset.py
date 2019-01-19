@@ -2,14 +2,11 @@
 import argparse
 import logging
 
-from download_dataset import main as download_dataset
-from preprocess_images import main as preprocess_images
-
 from helpers.util import run_script
 
 
 def main(dataset: str, raw: bool) -> None:
-    if dataset == 'lpz_2016_2017' and raw:
+    if dataset == "lpz_2016_2017" and raw:
         from helpers.datasets import lpz_data_2016_2017_raw as data
     else:
         raise NotImplementedError
@@ -28,17 +25,12 @@ def _parse_args() -> dict:
             Python dictionary
     """
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('dataset',
-                        nargs='?',
-                        type=str,
-                        default='lpz_2016_2017',
-                        choices=DATASETS
-                        )
-    parser.add_argument('--raw', action='store_true')
+    parser.add_argument("dataset", nargs="?", type=str, default="lpz_2016_2017")
+    parser.add_argument("--raw", action="store_true")
     args = vars(parser.parse_args())
-    logging.info(f'Arguments passed at command line: {args}')
+    logging.info(f"Arguments passed at command line: {args}")
     return args
 
 
-if __name__ == '__main__':
-    run_script(main, _parse_args)
+if __name__ == "__main__":
+    run_script(_parse_args, main)

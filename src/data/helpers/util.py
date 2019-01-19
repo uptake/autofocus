@@ -17,9 +17,9 @@ def run_script(argparse_func, main_func):
 
     """
     start_time = time.perf_counter()
-    logging.basicConfig(format='%(levelname)s %(asctime)s %(message)s')
+    logging.basicConfig(format="%(levelname)s %(asctime)s %(message)s")
     logging.getLogger().setLevel(logging.INFO)
-    logging.info(f'Running {__file__}')
+    logging.info(f"Running {__file__}")
     _log_memory()
 
     args_dict = argparse_func()
@@ -27,15 +27,15 @@ def run_script(argparse_func, main_func):
 
     end_time = time.perf_counter()
     time_elapsed = timedelta(seconds=end_time - start_time)
-    logging.info(f'Ran {__file__} in {time_elapsed}')
+    logging.info(f"Ran {__file__} in {time_elapsed}")
     _log_memory()
 
 
 def _log_memory() -> None:
     memory = psutil.virtual_memory()
-    logging.info(f'Memory total:  {_convert_to_gb(memory.total)} GB')
-    logging.info(f'Memory used:  {_convert_to_gb(memory.used)} GB')
-    logging.info(f'Memory available:  {_convert_to_gb(memory.available)} GB')
+    logging.info(f"Memory total:  {_convert_to_gb(memory.total)} GB")
+    logging.info(f"Memory used:  {_convert_to_gb(memory.used)} GB")
+    logging.info(f"Memory available:  {_convert_to_gb(memory.available)} GB")
 
 
 def _convert_to_gb(bytes: float) -> float:
