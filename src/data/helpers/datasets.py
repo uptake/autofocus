@@ -11,7 +11,7 @@ import boto3
 import botocore
 
 
-REPO_DIR = Path(__file__).resolve().parents[2]
+REPO_DIR = Path(__file__).resolve().parents[3]
 DATA_DIR = REPO_DIR / "data"
 
 
