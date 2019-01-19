@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+import logging
 import os
 from pathlib import Path
 import sys
@@ -12,9 +13,6 @@ import botocore
 
 REPO_DIR = Path(__file__).resolve().parents[2]
 DATA_DIR = REPO_DIR/'data'
-
-
-DATASETS = ['lpz_2016_2017']
 
 
 class DownloadProgressPercentage:
@@ -41,6 +39,12 @@ class Dataset:
     def download(self):
         raise NotImplementedError
 
+    def extract(self):
+        raise NotImplementedError
+
+    def process(self):
+        raise NotImplementedError
+
 
 @dataclass
 class S3Dataset(Dataset):
@@ -51,6 +55,7 @@ class S3Dataset(Dataset):
         self.local_archive_path = self.local_dir / os.path.basename(self.s3_key)
 
     def download(self):
+        logging.info(f'Downloading {self.s3_key} to {self.local_archive_path}')
         self._seen_so_far = 0
 
         if not self.local_dir.is_dir():
@@ -82,10 +87,10 @@ class S3Dataset(Dataset):
             with tarfile.open(self.local_archive_path) as archive:
                 members = archive.getmembers()
                 for item in tqdm(iterable=members, total=len(members)):
-                    archive.extract(member=item, path=self.local_archive_path.parent)
+                    archive.extract(member=item)
 
 
-lpz_data_2016_2017 = S3Dataset(
+lpz_data_2016_2017_raw = S3Dataset(
     local_dir=DATA_DIR/'lpz',
     s3_bucket='autofocus',
     s3_key='lpz_data/data_2016_2017.tar.gz',

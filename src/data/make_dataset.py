@@ -1,15 +1,21 @@
 """Do all steps to download and preprocess dataset"""
 import argparse
 import logging
-import time
 
 from download_dataset import main as download_dataset
+from preprocess_images import main as preprocess_images
 
-from helpers.datasets import DATASETS
+from helpers.util import run_script
 
 
-def main(dataset: str) -> None:
-    download_dataset(dataset)
+def main(dataset: str, raw: bool) -> None:
+    if dataset == 'lpz_2016_2017' and raw:
+        from helpers.datasets import lpz_data_2016_2017_raw as data
+    else:
+        raise NotImplementedError
+    data.download()
+    data.extract()
+    data.process()
 
 
 def _parse_args() -> dict:
@@ -28,18 +34,11 @@ def _parse_args() -> dict:
                         default='lpz_2016_2017',
                         choices=DATASETS
                         )
+    parser.add_argument('--raw', action='store_true')
     args = vars(parser.parse_args())
     logging.info(f'Arguments passed at command line: {args}')
     return args
 
 
 if __name__ == '__main__':
-    start_time = time.time()
-    logging.basicConfig(format='%(levelname)s %(asctime)s %(message)s')
-    logging.getLogger().setLevel(logging.INFO)
-    args_dict = _parse_args()
-
-    main(**args_dict)
-
-    end_time = time.time()
-    logging.info(f'Completed in {round(end_time - start_time, 2)} seconds')
+    run_script(main, _parse_args)
