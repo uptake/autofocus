@@ -15,8 +15,7 @@ Data is being uploaded to `s3://autofocus`. Providing convenient ways to downloa
 
 #### Example call
 ```bash
-python autofocus/download_images.py \
---local_folder data --bucket autofocus
+python autofocus/download_images.py --local-folder data --bucket autofocus
 ```
 
 #### Details
@@ -27,7 +26,7 @@ WARNING: This dataset is over 80 GB.
 
 - local-folder: path to save files to locally
 - bucket: S3 bucket to copy locally
-- download-tar: Flag of whether to download tar files. 
+- download-tar: Flag of whether to download tar files.
 
 #### Output
 
