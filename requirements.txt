@@ -1,6 +1,5 @@
-# external requirements
 boto3
-flake8
+creevey>=0.1.18
 mlflow
 opencv-contrib-python
 pandas
