@@ -1,5 +1,5 @@
 boto3
-creevey>=0.1.18
+creevey>=0.2
 mlflow
 opencv-contrib-python
 pandas
