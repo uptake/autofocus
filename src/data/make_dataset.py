@@ -10,8 +10,7 @@ def main(dataset: str, raw: bool) -> None:
         from helpers.datasets import lpz_data_2016_2017_raw as data
     else:
         raise NotImplementedError
-    data.download()
-    data.extract()
+    data.get_raw()
     data.process()
 
 
