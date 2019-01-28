@@ -9,7 +9,7 @@ def main(dataset: str, raw: bool) -> None:
     if dataset == "lpz_2016_2017" and raw:
         from helpers.datasets import lpz_data_2016_2017_raw as data
     else:
-        raise NotImplementedError
+        raise NotImplementedError(f"{dataset} has not been implemented.")
     data.get_raw()
     data.process()
 
