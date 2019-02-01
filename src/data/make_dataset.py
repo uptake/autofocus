@@ -11,7 +11,7 @@ def main(dataset: str, raw: bool) -> None:
     else:
         raise NotImplementedError(f"{dataset} has not been implemented.")
     data.get_raw()
-    data.process()
+    # data.process()
 
 
 def _parse_args() -> dict:

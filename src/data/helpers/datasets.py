@@ -17,8 +17,6 @@ lpz_data_2016_2017_raw = S3TarfileDataset(
 
 # class LPZ_2016_2017_RawProcessor(LPZ_2016_2017_Processor):
 #     def process_images(self):
-#         raise NotImplementedError
-#
 #         image_properties = defaultdict(list)
 #         image_paths = get_paths_with_extensions(self.raw_data_dir, extensions)
 #         for path in tqdm(image_paths):
@@ -33,8 +31,8 @@ lpz_data_2016_2017_raw = S3TarfileDataset(
 #                 save_image(processed_image, outpath)
 #         csv_outpath = Path(outdir) / "image_properties.csv"
 #         write_csv(pd.DataFrame(image_properties), csv_outpath)
-
-
+#
+#
 # class LPZ_2016_2017_Processor(_Processor):
 #     def process(self, local_dir: Path):
 #         super().__init__(local_dir)
@@ -55,4 +53,3 @@ lpz_data_2016_2017_raw = S3TarfileDataset(
 #         labels = _groupby(df=labels, field="filepath", aggregation_func=max)
 #         _add_image_properties(labels, image_properties)
 #         labels = _clean_label_columns(labels)
-#
