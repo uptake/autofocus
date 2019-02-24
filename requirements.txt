@@ -1,7 +1,0 @@
-boto3
-creevey>=0.2
-mlflow
-opencv-contrib-python
-pandas
-pillow
-tqdm
