@@ -22,6 +22,7 @@ def download_s3(key: str, bucket: str, dest: PathOrStr):
     client = boto3.resource("s3")
     progress = S3DownloadProgressPercentage(client, bucket, key)
     client.Bucket(bucket).download_file(Key=key, Filename=str(dest), Callback=progress)
+    print()
 
 
 def untar(inpath, outdir):

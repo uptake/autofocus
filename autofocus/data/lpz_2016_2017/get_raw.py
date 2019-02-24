@@ -25,6 +25,8 @@ def main():
         download_s3(KEY, BUCKET, download_dest)
 
     untar(download_dest, untar_dest)
+    logging.info(f"Deleting {download_dest}")
+    download_dest.unlink()
 
 
 if __name__ == "__main__":
