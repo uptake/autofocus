@@ -1,6 +1,7 @@
 """Get raw data from the Lincoln Park Zoo from 2015 and 2016"""
 import logging
 from pathlib import Path
+import time
 
 from autofocus.data.helpers import download_s3, untar
 
@@ -32,5 +33,9 @@ def main():
 if __name__ == "__main__":
     logging.basicConfig(format="%(levelname)s %(asctime)s %(message)s")
     logging.getLogger().setLevel(logging.INFO)
+    start_time = time.time()
 
     main()
+
+    end_time = time.time()
+    logging.info(f"Completed in {round(end_time - start_time, 2)} seconds")
