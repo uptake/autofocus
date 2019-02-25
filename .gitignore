@@ -94,3 +94,5 @@ ENV/
 
 # Image files
 **/*.JPG
+
+data/
