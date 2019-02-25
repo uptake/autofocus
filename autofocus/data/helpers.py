@@ -1,14 +1,17 @@
+from functools import partial
 import logging
 from pathlib import Path
+import os
+import sys
 import tarfile
 import threading
-import sys
-from typing import Union
+from typing import Iterable, List
+
 
 import boto3
 from tqdm import tqdm
 
-PathOrStr = Union[Path, str]
+from autofocus.data.constants import PathOrStr
 
 
 def download_s3(key: str, bucket: str, dest: PathOrStr):
@@ -25,7 +28,7 @@ def download_s3(key: str, bucket: str, dest: PathOrStr):
     print()  # add linebreak after progress percentage
 
 
-def untar(inpath, outdir):
+def untar(inpath: PathOrStr, outdir: PathOrStr):
     logging.info(f"Untarring {inpath} to {outdir}")
     with tarfile.open(inpath) as archive:
         members = archive.getmembers()
@@ -36,13 +39,13 @@ def untar(inpath, outdir):
 class S3DownloadProgressPercentage:
     """Use as a callback to track download progress."""
 
-    def __init__(self, client, bucket, key):
+    def __init__(self, client, bucket: str, key: str):
         self._key = key
         self._size = client.Bucket(bucket).Object(key).content_length
         self._seen_so_far = 0
         self._lock = threading.Lock()
 
-    def __call__(self, bytes_amount):  # noqa: 170
+    def __call__(self, bytes_amount: int) -> None:  # noqa: 170
         with self._lock:
             self._seen_so_far += bytes_amount
             percentage = (self._seen_so_far / self._size) * 100

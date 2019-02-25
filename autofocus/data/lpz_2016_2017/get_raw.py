@@ -1,14 +1,12 @@
 """Get raw data from the Lincoln Park Zoo from 2015 and 2016"""
 import logging
-from pathlib import Path
 import time
 
+from autofocus.data.constants import DATA_DIR
 from autofocus.data.helpers import download_s3, untar
 
 BUCKET = "autofocus"
 KEY = "lpz_data/data_2016_2017.tar.gz"
-REPO_DIR = Path(__file__).resolve().parents[3]
-DATA_DIR = REPO_DIR / "data"
 
 
 def main():
