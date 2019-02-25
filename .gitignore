@@ -91,3 +91,6 @@ ENV/
 
 # Apple
 .DS_Store
+
+# Image files
+**/*.JPG
