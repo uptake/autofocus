@@ -1,4 +1,3 @@
-
 import numpy as np
 import tensorflow as tf
 
@@ -24,11 +23,9 @@ def load_graph(model_file):
     return graph
 
 
-def read_tensor_from_image_file(file_name,
-                                input_height=224,
-                                input_width=224,
-                                input_mean=0,
-                                input_std=255):
+def read_tensor_from_image_file(
+    file_name, input_height=224, input_width=224, input_mean=0, input_std=255
+):
     """
     Read in an image file as a tensor and convert height, width, mean and std.
 
@@ -50,16 +47,13 @@ def read_tensor_from_image_file(file_name,
     input_name = "file_reader"
     file_reader = tf.read_file(file_name, input_name)
     if file_name.endswith(".png"):
-        image_reader = tf.image.decode_png(
-            file_reader, channels=3, name="png_reader")
+        image_reader = tf.image.decode_png(file_reader, channels=3, name="png_reader")
     elif file_name.endswith(".gif"):
-        image_reader = tf.squeeze(
-            tf.image.decode_gif(file_reader, name="gif_reader"))
+        image_reader = tf.squeeze(tf.image.decode_gif(file_reader, name="gif_reader"))
     elif file_name.endswith(".bmp"):
         image_reader = tf.image.decode_bmp(file_reader, name="bmp_reader")
     else:
-        image_reader = tf.image.decode_jpeg(
-            file_reader, channels=3, name="jpeg_reader")
+        image_reader = tf.image.decode_jpeg(file_reader, channels=3, name="jpeg_reader")
     float_caster = tf.cast(image_reader, tf.float32)
     dims_expander = tf.expand_dims(float_caster, 0)
     resized = tf.image.resize_bilinear(dims_expander, [input_height, input_width])
@@ -68,6 +62,7 @@ def read_tensor_from_image_file(file_name,
     result = sess.run(normalized)
 
     return result
+
 
 def load_labels(label_file):
     """
@@ -103,9 +98,8 @@ def predict_single(graph, file_name, labels):
 
     """
 
-
-    input_layer = "Placeholder"#"input"
-    output_layer = "final_result"#"InceptionV3/Predictions/Reshape_1"
+    input_layer = "Placeholder"  # "input"
+    output_layer = "final_result"  # "InceptionV3/Predictions/Reshape_1"
 
     input_name = "import/" + input_layer
     output_name = "import/" + output_layer
@@ -124,23 +118,19 @@ def predict_single(graph, file_name, labels):
         input_height=input_height,
         input_width=input_width,
         input_mean=input_mean,
-        input_std=input_std)
-
-
+        input_std=input_std,
+    )
 
     with tf.Session(graph=graph) as sess:
-        results = sess.run(output_operation.outputs[0], {
-            input_operation.outputs[0]: t
-        })
+        results = sess.run(output_operation.outputs[0], {input_operation.outputs[0]: t})
     results = np.squeeze(results)
 
     out_dict = {}
-    out_dict['filename'] = file_name
+    out_dict["filename"] = file_name
     preds = dict(zip(labels, results))
     out_dict.update(preds)
 
-    return(out_dict)
-
+    return out_dict
 
 
 def predict_multiple(graph, file_list, labels):
@@ -158,8 +148,8 @@ def predict_multiple(graph, file_list, labels):
     """
 
     all_results = []
-    input_layer = "Placeholder"#"input"
-    output_layer = "final_result"#"InceptionV3/Predictions/Reshape_1"
+    input_layer = "Placeholder"  # "input"
+    output_layer = "final_result"  # "InceptionV3/Predictions/Reshape_1"
 
     input_name = "import/" + input_layer
     output_name = "import/" + output_layer
@@ -180,18 +170,19 @@ def predict_multiple(graph, file_list, labels):
                 input_height=input_height,
                 input_width=input_width,
                 input_mean=input_mean,
-                input_std=input_std)
+                input_std=input_std,
+            )
 
-            results = sess.run(output_operation.outputs[0], {
-                input_operation.outputs[0]: t
-            })
+            results = sess.run(
+                output_operation.outputs[0], {input_operation.outputs[0]: t}
+            )
             results = np.squeeze(results)
 
             out_dict = {}
-            out_dict['filename'] = file_name
+            out_dict["filename"] = file_name
             preds = dict(zip(labels, results))
             out_dict.update(preds)
 
             all_results.append(out_dict)
 
-    return(all_results)
+    return all_results
