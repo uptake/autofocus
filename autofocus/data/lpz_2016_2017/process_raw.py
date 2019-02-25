@@ -36,7 +36,11 @@ def main():
 
     logging.info(f"Processing images and writing results to {OUTDIR}")
     trim_resize_pipeline.run(
-        inpaths=image_paths, path_func=path_func, n_jobs=N_JOBS, skip_existing=True
+        inpaths=image_paths,
+        path_func=path_func,
+        n_jobs=N_JOBS,
+        skip_existing=True,
+        exceptions_to_catch=ZeroDivisionError,
     )
 
 
