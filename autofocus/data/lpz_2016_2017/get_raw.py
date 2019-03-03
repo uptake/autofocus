@@ -1,6 +1,8 @@
-"""Get raw data from the Lincoln Park Zoo from 2015 and 2016"""
+"""Get raw data from the Lincoln Park Zoo from 2016 and 2017"""
 import logging
 import time
+
+from fastai.vision import verify_images
 
 from autofocus.data.constants import DATA_DIR
 from autofocus.data.helpers import download_s3, untar
@@ -8,24 +10,28 @@ from autofocus.data.helpers import download_s3, untar
 BUCKET = "autofocus"
 KEY = "lpz_data/data_2016_2017.tar.gz"
 
+LOCAL_FILENAME = "lpz_data_2016_2017"
+DOWNLOAD_DEST = DATA_DIR / (LOCAL_FILENAME + ".tar.gz")
+UNTAR_DEST = DATA_DIR / LOCAL_FILENAME / "raw"
+
 
 def main():
     if not DATA_DIR.exists():
         DATA_DIR.mkdir(parents=True)
-    local_filename = "lpz_data_2016_2017"
-    download_dest = DATA_DIR / (local_filename + ".tar.gz")
-    untar_dest = DATA_DIR / local_filename / "raw"
 
-    if download_dest.exists():
-        logging.warning(f"Skipping download because {download_dest} exists.")
-    elif untar_dest.exists():
-        raise ValueError(f"Aborting because {untar_dest} exists.")
+    if DOWNLOAD_DEST.exists():
+        logging.warning(f"Skipping download because {DOWNLOAD_DEST} exists.")
+    elif UNTAR_DEST.exists():
+        raise ValueError(f"Aborting because {UNTAR_DEST} exists.")
     else:
-        download_s3(KEY, BUCKET, download_dest)
+        download_s3(KEY, BUCKET, DOWNLOAD_DEST)
 
-    untar(download_dest, untar_dest)
-    logging.info(f"Deleting {download_dest}")
-    download_dest.unlink()
+    untar(DOWNLOAD_DEST, UNTAR_DEST)
+    logging.info(f"Deleting {DOWNLOAD_DEST}")
+    DOWNLOAD_DEST.unlink()
+
+    logging.info(f"Deleting corrupted files")
+    verify_images(UNTAR_DEST, recurse=True, delete=True)
 
 
 if __name__ == "__main__":

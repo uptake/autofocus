@@ -56,7 +56,7 @@ def record_mean_brightness(
 
     Side effect
     -----------
-    Adds a "mean_brightness" items to log_dict[inpath]
+    Adds a "mean_brightness" item to log_dict[inpath]
     """
     is_grayscale = has_channels_equal(image)
 
@@ -68,3 +68,23 @@ def record_mean_brightness(
     log_dict[inpath]["mean_brightness"] = image_gray.mean()
 
     return image
+
+
+def trim_bottom(image: np.array, num_pixels: int, **kwargs) -> np.array:
+    """
+    Trim off the bottom of an image
+
+    `kwargs` included only for compatibility with Creevey's
+    `CustomReportingPipeline`
+
+    Parameters
+    ----------
+    image
+    num_pixels
+        Height of strip to trim off the bottom of the image, in pixels
+
+    Returns
+    -------
+    Trimmed image
+    """
+    return image[:-num_pixels, :]
