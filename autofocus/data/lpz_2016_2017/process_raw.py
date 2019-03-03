@@ -5,12 +5,14 @@ import time
 
 from creevey import Pipeline
 from creevey.load_funcs.image import load_image
-from creevey.ops.image import resize
+from creevey.ops.image import record_mean_brightness, resize
 from creevey.path_funcs import replace_dir
 from creevey.util.image import find_image_files
 from creevey.write_funcs.image import write_image
 
 from autofocus.data.constants import DATA_DIR
+from autofocus.data.ops import record_exif_metadata
+from autofocus.data.lpz_2016_2017.ops import record_is_grayscale, record_mean_brightness
 
 MIN_DIM = 512
 N_JOBS = 10
@@ -26,9 +28,17 @@ def main():
     # learn batch effects that do not generalize than to lead to genuine
     # learning, so I remove them.
     trim_bottom = lambda image: image[:-NUM_PIXELS_TO_TRIM, :]
-    resize_512 = partial(resize, min_dim=MIN_DIM)
+    resize_min_dim = partial(resize, min_dim=MIN_DIM)
+    ops = [
+        trim_bottom,
+        resize_min_dim,
+        record_is_grayscale,
+        record_mean_brightness,
+        record_exif_metadata,
+    ]
+
     trim_resize_pipeline = Pipeline(
-        load_func=load_image, ops=[trim_bottom, resize_512], write_func=write_image
+        load_func=load_image, ops=ops, write_func=write_image
     )
 
     image_paths = find_image_files(INDIR)

@@ -1,12 +1,10 @@
-from functools import partial
 import logging
 from pathlib import Path
-import os
 import sys
 import tarfile
 import threading
-from typing import Iterable, List
 
+import numpy as np
 
 import boto3
 from tqdm import tqdm
@@ -53,3 +51,23 @@ class S3DownloadProgressPercentage:
                 f"\rProgress: {self._seen_so_far} / {self._size}  ({percentage:.2f}%)"
             )
             sys.stdout.flush()
+
+
+def has_channels_equal(image: np.array) -> bool:
+    """Indicates whether all channels have equal values.
+    Assumes that channels lie along the final axis.
+    Args:
+        image: NumPy array
+    Returns:
+        True if all channels have equal values, including when there is
+            only one channel as long as there is an axis corresponding
+            to that channel (e.g. a grayscale image with shape height
+            x width x 1, but not one with shape height x width)
+    """
+    first_channel = image[..., 0]
+    return all(
+        [
+            np.equal(image[..., channel_num], first_channel).all()
+            for channel_num in range(1, image.shape[-1])
+        ]
+    )
