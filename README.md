@@ -10,22 +10,22 @@ Install the package in editable model with dev dependencies:
 pip install -e ".[dev]"
 ```
 
-Download a preprocessed version of our primary dataset (~15GB) to `autofocus/data/lpz_2016_2017/processed`:
+Download a preprocessed version of our primary dataset to `autofocus/data/lpz_2016_2017/processed`:
 
 ```bash
 python autofocus/data/lpz_2016_2017/get_processed.py
 ```
 
-This dataset contains approximately 80,000 images and a CSV of labels and image metadata.
+This dataset contains approximately 80,000 images and a CSV of labels and image metadata. It occupies about 20GB uncompressed, but you will need about 40GB free for the downloading and untarring process.
 
 ## Getting the Raw Data
 
-`autofocus/data/lpz_2016_2017/get_processed.py` downloads images that have been preprocessed by trimming the bottom 198 pixels (which often contains a metadata footer that could only mislead a machine learning model) and labels that have been cleaned up and organized. This preprocessing is intended to be fairly safe, but you can download the raw data by running this commmand:
+`autofocus/data/lpz_2016_2017/get_processed.py` downloads images that have been preprocessed by trimming the bottom 198 pixels (which often contains a metadata footer that could only mislead a machine learning model) and labels that have been cleaned up and organized. This preprocessing is intended to be fairly conservative, but you can download the raw data by running this commmand:
 
 ```bash
 python autofocus/data/lpz_2016_2017/get_raw.py
 ```
 
-The raw data takes up about 60GB untarred, but will need to have over 100GB free to download the tarfile and untar it before the tarfile is deleted.
+The raw data takes up about 60GB untarred, but will need to have about 100GB free to download the tarfile and untar it before the tarfile is deleted.
 
 `autofocus/data/lpz_2016_2017/process_raw.py` contains the code that was used to generate the processed data from the raw data.

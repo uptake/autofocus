@@ -10,7 +10,7 @@ from autofocus.data.helpers import download_s3, untar
 BUCKET = "autofocus"
 KEY = "lpz_data/data_2016_2017.tar.gz"
 
-LOCAL_FILENAME = "lpz_data_2016_2017"
+LOCAL_FILENAME = "lpz_2016_2017"
 DOWNLOAD_DEST = DATA_DIR / (LOCAL_FILENAME + ".tar.gz")
 UNTAR_DEST = DATA_DIR / LOCAL_FILENAME / "raw"
 
@@ -29,9 +29,6 @@ def main():
     untar(DOWNLOAD_DEST, UNTAR_DEST)
     logging.info(f"Deleting {DOWNLOAD_DEST}")
     DOWNLOAD_DEST.unlink()
-
-    logging.info(f"Deleting corrupted files")
-    verify_images(UNTAR_DEST, recurse=True, delete=True)
 
 
 if __name__ == "__main__":

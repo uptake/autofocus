@@ -34,8 +34,15 @@ PROCESSED_DIR = THIS_DATASET_DIR / "processed"
 PROCESSED_IMAGE_DIR = PROCESSED_DIR / "images"
 PROCESSED_LABELS_CSV_OUTPATH = PROCESSED_DIR / "labels.csv"
 
+CORRUPTED_FILES = [
+    RAW_DIR / "images_2016" / "DPT" / "D03-AMP1" / "._CHIL - D03-AMP1-JU16_00037.JPG"
+]
+
 
 def main():
+    logging.info("Deleting known corrupted files")
+    for path in CORRUPTED_FILES:
+        path.unlink()
     logging.info(f"Processing images and writing results to {PROCESSED_IMAGE_DIR}")
     run_record = _process_images()
     logging.info("Processing labels")
@@ -57,13 +64,17 @@ def _process_images():
         load_func=load_image, ops=ops, write_func=write_image
     )
 
-    image_paths = find_image_files(RAW_DIR)[:10]
+    image_paths = find_image_files(RAW_DIR)
     path_func = partial(replace_dir, outdir=PROCESSED_IMAGE_DIR)
 
     run_record = trim_resize_pipeline.run(
-        inpaths=image_paths, path_func=path_func, n_jobs=N_JOBS, skip_existing=False
+        inpaths=image_paths,
+        path_func=path_func,
+        n_jobs=N_JOBS,
+        skip_existing=False,
+        exceptions_to_catch=ZeroDivisionError,
     )
-    logging.info("Deleting corrupted images")
+    logging.info("Checking for additional corrupted images")
     run_record = _delete_bad_images(run_record)
 
     return run_record
