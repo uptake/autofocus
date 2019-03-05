@@ -1,3 +1,5 @@
+**Development work is currently focused on the `reorganize` branch. I suggest that you work from there if you are looking to contribute to this project.**
+
 # Autofocus
 
 This project seeks to make conservation organizations more efficient, primarily by automating the process of labeling images taken by motion-activated "camera traps" according to the kinds of animals that appear in them. See [this article](https://www.uptake.org/autofocus.html) for more information.
