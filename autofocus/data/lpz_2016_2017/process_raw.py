@@ -64,7 +64,7 @@ def _process_images():
         load_func=load_image, ops=ops, write_func=write_image
     )
 
-    image_paths = find_image_files(RAW_DIR)
+    image_paths = find_image_files(RAW_DIR)[:10]
     path_func = partial(replace_dir, outdir=PROCESSED_IMAGE_DIR)
 
     run_record = trim_resize_pipeline.run(
@@ -102,11 +102,17 @@ def _process_labels(run_record):
         run_record.drop(
             ["skipped_existing", "exception_handled", "time_finished"], axis="columns"
         )
-        .rename(columns={"outpath": "path"})
         .join(raw_df, how="left")
-        .loc[:, ["path", "label", "grayscale", "mean_brightness", "date"]]
+        .loc[:, ["outpath", "label", "grayscale", "mean_brightness", "date"]]
         .reset_index(drop=True)
     )
+    processed_df.loc[:, "filename"] = processed_df.loc[:, "outpath"].apply(
+        lambda path: Path(path).name
+    )
+    processed_df.loc[:, "location"] = processed_df.loc[:, "filename"].apply(
+        lambda fn: fn.split("-")[2]
+    )
+    processed_df = processed_df.drop("outpath")
 
     return processed_df
 
