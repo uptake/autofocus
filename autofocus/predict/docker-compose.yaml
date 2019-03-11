@@ -1,0 +1,19 @@
+version: '2'
+
+services:
+  app:
+    restart: always
+    build:
+      context:  ""
+      dockerfile: Dockerfile
+    expose:
+      - "8080"
+  proxy:
+    restart: always
+    build:
+      context:  nginx
+      dockerfile: nginx/Dockerfile
+    ports:
+      - "80:80"
+    links:
+      - app
