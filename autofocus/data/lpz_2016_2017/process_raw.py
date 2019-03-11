@@ -112,7 +112,7 @@ def _process_labels(run_record):
     processed_df.loc[:, "location"] = processed_df.loc[:, "filename"].apply(
         lambda fn: fn.split("-")[2]
     )
-    processed_df = processed_df.drop("outpath")
+    processed_df = processed_df.drop("outpath", axis="columns")
 
     return processed_df
 
