@@ -136,8 +136,11 @@ def get_timestamp(exif: dict) -> datetime:
     Args:
         exif: dictionary of Exif metadata that includes "DateTime"
     """
-    timestamp = exif['DateTime']
-    timestamp = datetime.strptime(timestamp, '%Y:%m:%d %H:%M:%S')
+    if 'DateTime' in exif:
+        timestamp = exif['DateTime']
+        timestamp = datetime.strptime(timestamp, '%Y:%m:%d %H:%M:%S')
+    else:
+        timestamp = None
     return timestamp
 
 
