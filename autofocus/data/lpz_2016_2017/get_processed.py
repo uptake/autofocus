@@ -2,8 +2,6 @@
 import logging
 import time
 
-from fastai.vision import verify_images
-
 from autofocus.data.constants import DATA_DIR
 from autofocus.data.helpers import download_s3, untar
 
@@ -29,9 +27,6 @@ def main():
     untar(DOWNLOAD_DEST, UNTAR_DEST)
     logging.info(f"Deleting {DOWNLOAD_DEST}")
     DOWNLOAD_DEST.unlink()
-
-    logging.info(f"Deleting corrupted files")
-    verify_images(UNTAR_DEST, recurse=True, delete=True)
 
 
 if __name__ == "__main__":
