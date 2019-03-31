@@ -10,7 +10,7 @@ KEY = "lpz_data/lpz_2016_2017_processed.tar.gz"
 
 LOCAL_FILENAME = "lpz_2016_2017"
 DOWNLOAD_DEST = DATA_DIR / (LOCAL_FILENAME + "_processed.tar.gz")
-UNTAR_DEST = DATA_DIR / LOCAL_FILENAME / "processed"
+UNTAR_DEST = DATA_DIR / LOCAL_FILENAME
 
 
 def main():
