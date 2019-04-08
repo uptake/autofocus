@@ -1,38 +1,20 @@
+FROM continuumio/miniconda3
+MAINTAINER data-science@shoprunner.com
+USER root
 
-FROM debian:stretch
-MAINTAINER Dan Acheson <Daniel.Acheson@uptake.com>
-
-# install debian packages
-ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update -qq \
- && apt-get install --no-install-recommends -y \
-    # install essentials
-    build-essential \
-    g++ \
-    git \
-    python3 \
-    python3-dev \
-    python3-pip \
-    python3-setuptools \
-    python3-virtualenv \
-    python3-wheel \
-    pkg-config \
-    # requirements for numpy
-    libopenblas-base \
-    gunicorn \
- && apt-get clean \
- && rm -rf /var/lib/apt/lists/*
+  && apt-get install --no-install-recommends -y gunicorn \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/*
 
-COPY ./requirements.txt ./requirements.txt
-ADD image_classify ./image_classify
-#ADD app ./app
-COPY ./app/* ./
-RUN pip3 install ./image_classify
-RUN pip3 install -r requirements.txt
+RUN conda install pytorch=1.0.1 torchvision -c pytorch \
+  && conda install -c fastai fastai=1.0.50.post1 \
+  && conda clean -y --all
 
-#WORKDIR /app
+COPY . /image_api
+WORKDIR /image_api
 
-
+RUN python -m pip install -r /image_api/requirements.txt
 
 EXPOSE 8080
-CMD ["gunicorn", "--bind", "0.0.0.0:8080","wsgi:app" ]
+CMD ["gunicorn", "--bind", "0.0.0.0:8080", "app.app:app" ]

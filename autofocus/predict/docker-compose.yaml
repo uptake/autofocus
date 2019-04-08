@@ -12,7 +12,7 @@ services:
     restart: always
     build:
       context:  nginx
-      dockerfile: nginx/Dockerfile
+      dockerfile: Dockerfile
     ports:
       - "80:80"
     links:

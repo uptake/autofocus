@@ -2,35 +2,16 @@ import json
 import os
 import time
 
-from flask import Flask, request, make_response
+from flask import Flask, request, jsonify, make_response
 from werkzeug import secure_filename
-from image_classify.model import (
-    load_graph,
-    load_labels,
-    predict_single,
-    predict_multiple,
-)
-from image_classify.utils import (
-    NumpyEncoder,
-    allowed_file,
-    list_zip_files,
-    filter_image_files,
-)
+from .model import predict_single, predict_multiple
+from .utils import allowed_file, list_zip_files, filter_image_files
 from zipfile import ZipFile
 
 # We are going to upload the files to the server as part of the request, so set tmp folder here.
 UPLOAD_FOLDER = "/tmp/"
 ALLOWED_EXTENSIONS = set(["png", "jpg", "jpeg", "gif", "bmp"])
 
-# this is key : save the graph after loading the model
-global GRAPH
-# GRAPH = load_graph("./human_classifier_graph.pb")
-GRAPH = load_graph("./human_mobilenet.pb")
-
-global LABELS
-LABELS = load_labels("./human_classifier_labels.txt")
-
-# APP STARTS HERE
 app = Flask(__name__)
 app.config.from_object(__name__)
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
@@ -55,13 +36,13 @@ def classify_single():
 
             # Get the predictions (output of the softmax) for this image
             t = time.time()
-            predictions = predict_single(GRAPH, file_path, LABELS)
+            predictions = predict_single(file_path)
             dt = time.time() - t
             app.logger.info("Execution time: %0.2f" % (dt * 1000.0))
 
             os.remove(file_path)
 
-            return make_response(json.dumps(predictions, cls=NumpyEncoder))
+            return jsonify(predictions)
         else:
             return "File type not allowed. File must be of type {allowed}".format(
                 allowed=ALLOWED_EXTENSIONS
@@ -109,7 +90,7 @@ def classify_zip():
                 os.path.join(app.config["UPLOAD_FOLDER"], x) for x in curr_file_list
             ]
 
-            predictions = predict_multiple(GRAPH, curr_file_list, LABELS)
+            predictions = predict_multiple(curr_file_list)
 
             # remove files
             for curr_file in curr_file_list:
