@@ -5,7 +5,7 @@ import numpy as np
 
 
 MODEL_DIR = Path(__file__).resolve().parents[1] / "models"
-MODEL_NAME = "multiclass_model_20190407.pkl"
+MODEL_NAME = "multilabel_model_20190407.pkl"
 model = load_learner(MODEL_DIR, MODEL_NAME)
 CLASSES = model.data.classes
 

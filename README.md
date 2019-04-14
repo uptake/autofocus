@@ -36,10 +36,10 @@ The raw data takes up about 60GB untarred, but will need to have about 100GB fre
 
 ## Getting a Model
 
-A trained multiclass fast.ai model can be downloaded from `s3://autofocus/models/multiclass_model_20190407.pkl`, for instance using the AWS CLI: 
+A trained multilabel fast.ai model can be downloaded from `s3://autofocus/models/multilabel_model_20190407.pkl`, for instance using the AWS CLI: 
 
 ```bash
-aws s3 cp s3://autofocus/models/multiclass_model_20190407.pkl autofocus/predict/models
+aws s3 cp s3://autofocus/models/multilabel_model_20190407.pkl autofocus/predict/models
 ```
 
 See `autofocus/predict` for code that loads the model and uses it to make predictions.
