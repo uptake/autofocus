@@ -14,8 +14,8 @@ from creevey.write_funcs.image import write_image
 from fastai.vision import verify_images
 import pandas as pd
 
-from autofocus.get_data.constants import DATA_DIR
-from autofocus.get_data.lpz_2016_2017.ops import (
+from autofocus.build_dataset.constants import DATA_DIR
+from autofocus.build_dataset.lpz_2016_2017.ops import (
     record_is_grayscale,
     record_mean_brightness,
     trim_bottom,
