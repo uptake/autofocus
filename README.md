@@ -42,6 +42,8 @@ A trained multilabel fast.ai model can be downloaded from `s3://autofocus/models
 aws s3 cp s3://autofocus/models/multilabel_model_20190407.pkl autofocus/predict/models
 ```
 
+See `autofocus/train_model/train_multilabel_model.ipynb` for the code that was used to train and evaluate this model.
+
 See `autofocus/predict` for code that loads the model and uses it to make predictions.
 
 ## Serving Predictions
