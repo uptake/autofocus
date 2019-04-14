@@ -9,7 +9,7 @@ import numpy as np
 import boto3
 from tqdm import tqdm
 
-from autofocus.data.constants import PathOrStr
+from autofocus.get_data.constants import PathOrStr
 
 
 def download_s3(key: str, bucket: str, dest: PathOrStr):

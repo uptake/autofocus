@@ -3,8 +3,8 @@ from typing import DefaultDict
 import cv2 as cv
 import numpy as np
 
-from autofocus.data.constants import PathOrStr
-from autofocus.data.helpers import has_channels_equal
+from autofocus.get_data.constants import PathOrStr
+from autofocus.get_data.helpers import has_channels_equal
 
 
 def record_is_grayscale(

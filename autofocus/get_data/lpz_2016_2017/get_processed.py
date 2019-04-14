@@ -1,18 +1,16 @@
-"""Get raw data from the Lincoln Park Zoo from 2016 and 2017"""
+"""Get processed data from the Lincoln Park Zoo from 2016 and 2017"""
 import logging
 import time
 
-from fastai.vision import verify_images
-
-from autofocus.data.constants import DATA_DIR
-from autofocus.data.helpers import download_s3, untar
+from autofocus.get_data.constants import DATA_DIR
+from autofocus.get_data.helpers import download_s3, untar
 
 BUCKET = "autofocus"
-KEY = "lpz_data/data_2016_2017.tar.gz"
+KEY = "lpz_data/lpz_2016_2017_processed.tar.gz"
 
 LOCAL_FILENAME = "lpz_2016_2017"
-DOWNLOAD_DEST = DATA_DIR / (LOCAL_FILENAME + ".tar.gz")
-UNTAR_DEST = DATA_DIR / LOCAL_FILENAME / "raw"
+DOWNLOAD_DEST = DATA_DIR / (LOCAL_FILENAME + "_processed.tar.gz")
+UNTAR_DEST = DATA_DIR / LOCAL_FILENAME
 
 
 def main():
