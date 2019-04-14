@@ -96,7 +96,7 @@ def classify_zip():
             for curr_file in curr_file_list:
                 os.remove(curr_file)
 
-            return make_response(json.dumps(predictions, cls=NumpyEncoder))
+            return make_response(jsonify(predictions))
 
             start = end + 1
 
