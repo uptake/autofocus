@@ -1,4 +1,3 @@
-
 # Stuff shared by all builds
 install:
   - python setup.py install
