@@ -1,8 +1,6 @@
-"""Get raw data from the Lincoln Park Zoo from 2016 and 2017"""
+"""Get raw data from the Lincoln Park Zoo from 2016 and 2017."""
 import logging
 import time
-
-from fastai.vision import verify_images
 
 from autofocus.build_dataset.constants import DATA_DIR
 from autofocus.build_dataset.helpers import download_s3, untar
@@ -15,7 +13,7 @@ DOWNLOAD_DEST = DATA_DIR / (LOCAL_FILENAME + ".tar.gz")
 UNTAR_DEST = DATA_DIR / LOCAL_FILENAME / "raw"
 
 
-def main():
+def main():  # noqa: D103
     if not DATA_DIR.exists():
         DATA_DIR.mkdir(parents=True)
 

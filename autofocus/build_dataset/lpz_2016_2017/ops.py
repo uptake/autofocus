@@ -1,3 +1,4 @@
+"""Image processing functions."""
 from typing import DefaultDict
 
 import cv2 as cv
@@ -28,6 +29,7 @@ def record_is_grayscale(
     Side effect
     -----------
     Adds a "mean_brightness" items to log_dict[inpath]
+
     """
     is_grayscale = has_channels_equal(image)
 
@@ -57,6 +59,7 @@ def record_mean_brightness(
     Side effect
     -----------
     Adds a "mean_brightness" item to log_dict[inpath]
+
     """
     is_grayscale = has_channels_equal(image)
 
@@ -72,7 +75,7 @@ def record_mean_brightness(
 
 def trim_bottom(image: np.array, num_pixels: int, **kwargs) -> np.array:
     """
-    Trim off the bottom of an image
+    Trim off the bottom of an image.
 
     `kwargs` included only for compatibility with Creevey's
     `CustomReportingPipeline`
@@ -86,5 +89,6 @@ def trim_bottom(image: np.array, num_pixels: int, **kwargs) -> np.array:
     Returns
     -------
     Trimmed image
+
     """
     return image[:-num_pixels, :]

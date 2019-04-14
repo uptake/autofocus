@@ -1,18 +1,32 @@
-import logging
+import logging  # noqa: D100
 from pathlib import Path
 import sys
 import tarfile
 import threading
 
-import numpy as np
-
 import boto3
+import numpy as np
 from tqdm import tqdm
 
 from autofocus.build_dataset.constants import PathOrStr
 
 
-def download_s3(key: str, bucket: str, dest: PathOrStr):
+def download_s3(key: str, bucket: str, dest: PathOrStr) -> None:
+    """
+    Download file from S3.
+
+    Make output directory if it doesn't exist. Write progress to stdout.
+
+    Parameters
+    ----------
+    key
+        S3 key for item to download
+    bucket
+        S3 bucket for item to download
+    dest
+        Desired output path
+
+    """
     logging.info(f"Downloading {key} to {dest}")
 
     outdir = Path(dest).parent
@@ -26,7 +40,18 @@ def download_s3(key: str, bucket: str, dest: PathOrStr):
     print()  # add linebreak after progress percentage
 
 
-def untar(inpath: PathOrStr, outdir: PathOrStr):
+def untar(inpath: PathOrStr, outdir: PathOrStr) -> None:
+    """
+    Unpack tarfile.
+
+    Parameters
+    ----------
+    inpath
+        Path to tarfile
+    outdir
+        Desired output directory
+
+    """
     logging.info(f"Untarring {inpath} to {outdir}")
     with tarfile.open(inpath) as archive:
         members = archive.getmembers()
@@ -38,6 +63,7 @@ class S3DownloadProgressPercentage:
     """Use as a callback to track download progress."""
 
     def __init__(self, client, bucket: str, key: str):
+        """Initialize."""
         self._key = key
         self._size = client.Bucket(bucket).Object(key).content_length
         self._seen_so_far = 0
@@ -54,15 +80,22 @@ class S3DownloadProgressPercentage:
 
 
 def has_channels_equal(image: np.array) -> bool:
-    """Indicates whether all channels have equal values.
+    """
+    Indicate whether all channels have equal values.
+
     Assumes that channels lie along the final axis.
-    Args:
-        image: NumPy array
-    Returns:
-        True if all channels have equal values, including when there is
-            only one channel as long as there is an axis corresponding
-            to that channel (e.g. a grayscale image with shape height
-            x width x 1, but not one with shape height x width)
+
+    Parameters
+    ----------
+    image
+
+    Returns
+    -------
+    True if all channels have equal values, including when there is only
+    one channel as long as there is an axis corresponding to that
+    channel (e.g. a grayscale image with shape height x width x 1, but
+    not one with shape height x width).
+
     """
     first_channel = image[..., 0]
     return all(

@@ -1,4 +1,4 @@
-"""Get processed data from the Lincoln Park Zoo from 2016 and 2017"""
+"""Get processed data from the Lincoln Park Zoo from 2016 and 2017."""
 import logging
 import time
 
@@ -13,7 +13,7 @@ DOWNLOAD_DEST = DATA_DIR / (LOCAL_FILENAME + "_processed.tar.gz")
 UNTAR_DEST = DATA_DIR / LOCAL_FILENAME
 
 
-def main():
+def main() -> None:  # noqa: D103
     if not DATA_DIR.exists():
         DATA_DIR.mkdir(parents=True)
 

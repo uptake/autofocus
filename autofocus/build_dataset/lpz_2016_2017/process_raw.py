@@ -1,4 +1,4 @@
-"""Process raw data"""
+"""Process raw data."""
 from functools import partial
 import logging
 import os
@@ -39,7 +39,16 @@ CORRUPTED_FILES = [
 ]
 
 
-def main():
+def main() -> None:
+    """
+    Process raw data.
+
+    Delete blacklisted corrupted images. Trim a footer from each image
+    and resize it to 512 pixels on its shorter dimension. Write results
+    to "autofocus/data/processed/images". Reformat labels from CSV and
+    write to a new file "autofocus/data/processed/labels.csv".
+
+    """
     logging.info("Deleting known corrupted files")
     for path in CORRUPTED_FILES:
         path.unlink()
@@ -64,7 +73,7 @@ def _process_images():
         load_func=load_image, ops=ops, write_func=write_image
     )
 
-    image_paths = find_image_files(RAW_DIR)[:10]
+    image_paths = find_image_files(RAW_DIR)
     path_func = partial(replace_dir, outdir=PROCESSED_IMAGE_DIR)
 
     run_record = trim_resize_pipeline.run(
