@@ -96,7 +96,19 @@ def _delete_bad_images(run_record):
 
     return run_record
 
-
+def _extract_seasons (FileName) :
+    #For parsing the seasons from the File Names
+    #The season names are based on the codes provided by Lincoln Park Zoo researchers
+    FileName = FileName.split("-")[3]
+    if FileName.startswith("JA") or FileName.startswith("WI") :
+        return "Winter"
+    elif FileName.startswith("AP") or FileName.startswith("SP") :
+        return "Spring"
+    elif FileName.startswith("JU") or FileName.startswith("SU") :
+        return "Summer"
+    else :
+        return "Fall"
+    
 def _process_labels(run_record):
     raw_df = (
         pd.concat([pd.read_csv(path) for path in RAW_CSV_PATHS], sort=False)
@@ -120,6 +132,9 @@ def _process_labels(run_record):
     )
     processed_df.loc[:, "location"] = processed_df.loc[:, "filename"].apply(
         lambda fn: fn.split("-")[2]
+    )
+    processed_df.loc[:, "season"] = processed_df.loc[:, "filename"].apply(
+    _extract_seasons
     )
     processed_df = processed_df.drop("outpath", axis="columns")
 
