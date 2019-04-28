@@ -18,7 +18,7 @@ aws s3 cp s3://autofocus/lpz_data/${FILENAME} $(pwd)/data/lpz_2016_2017/
 Unpack the tarfile:
 
 ```bash
-tar -xzf $(pwd)/data/lpz_2016_2017/${FILENAME}
+tar -xf $(pwd)/data/lpz_2016_2017/${FILENAME}
 ```
 
 Delete the tarfile:
