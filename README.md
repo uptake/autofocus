@@ -1,50 +1,49 @@
-**Note: This repository is being largely rewritten from the ground up on the `reorganize` branch. Minor issues on the `master` bring will not be given high priority, and new contributors may wish to base their work on that branch.**
-
 # Autofocus
 
 This project seeks to make conservation organizations more efficient by automating the process of labeling images taken by motion-activated "camera traps" according to the kinds of animals that appear in them. See [this article](https://www.uptake.org/impact/special-projects) for more information.
 
 ## Getting the Data
 
-### Processed Data
+Install the AWS CLI tool:
 
-Install the package in editable model with dev dependencies:
+`pip install awscli`
 
-```bash
-pip install -e ".[dev]"
-```
+All of the commands below are written to run from the repo root.
 
-Download a preprocessed version of our primary dataset to `autofocus/data/lpz_2016_2017/processed`:
+Download a preprocessed version of our primary dataset to `autofocus/data/lpz_2016_2017/processed` (you can change the destination directory if you like):
 
 ```bash
-python autofocus/build_dataset/lpz_2016_2017/get_processed.py
+FILENAME=lpz_2016_2017_processed.tar.gz
+aws s3 cp s3://autofocus/lpz_data/${FILENAME} $(pwd)/data/lpz_2016_2017/
 ```
 
-This dataset contains approximately 80,000 images and a CSV of labels and image metadata. It occupies about 20GB uncompressed, but you will need about 40GB free for the downloading and untarring process.
-
-### Raw Data
-
-`autofocus/data/lpz_2016_2017/get_processed.py` downloads images that have been preprocessed by trimming the bottom 198 pixels (which often contains a metadata footer that could only mislead a machine learning model) and labels that have been cleaned up and organized. This preprocessing is intended to be fairly conservative, but you can download the raw data by running this commmand:
+Unpack the tarfile:
 
 ```bash
-python autofocus/build_dataset/lpz_2016_2017/get_raw.py
+tar -xzf $(pwd)/data/lpz_2016_2017/${FILENAME}
 ```
 
-The raw data takes up about 60GB untarred, but will need to have about 100GB free to download the tarfile and untar it before the tarfile is deleted.
+Delete the tarfile:
+
+```bash
+rm $(pwd)/data/lpz_2016_2017/${FILENAME}
+```
+
+This dataset contains approximately 80,000 images and a CSV of labels and image metadata. It occupies 17.1GB uncompressed, so you will need about 40GB free for the downloading and untarring process. The images have been preprocessed by trimming the bottom 198 pixels (which often contains a metadata footer that could only mislead a machine learning model) and resizing to be 512 pixels along their shorter dimension. In addition, the labels that have been cleaned up and organized.
+
+If you would like to work with data that has not been preprocessed as described above, replace `FILENAME=lpz_2016_2017_processed.tar.gz` with `FILENAME=data_2016_2017.tar.gz`. You will need to have about 100GB free to download and untar the raw data.
 
 `autofocus/data/lpz_2016_2017/process_raw.py` contains the code that was used to generate the processed data from the raw data.
 
 ## Getting a Model
 
-A trained multilabel fast.ai model can be downloaded from `s3://autofocus/models/multilabel_model_20190407.pkl`, for instance using the AWS CLI: 
+Download a trained multilabel fast.ai model: 
 
 ```bash
-aws s3 cp s3://autofocus/models/multilabel_model_20190407.pkl autofocus/predict/models
+aws s3 cp s3://autofocus/models/multilabel_model_20190407.pkl $(pwd)/autofocus/predict/models
 ```
 
-See `autofocus/train_model/train_multilabel_model.ipynb` for the code that was used to train and evaluate this model.
-
-See `autofocus/predict` for code that loads the model and uses it to make predictions.
+`autofocus/train_model/train_multilabel_model.ipynb` contains the code that was used to train and evaluate this model.
 
 ## Serving Predictions
 
