@@ -4,9 +4,7 @@ This project seeks to make conservation organizations more efficient by automati
 
 ## Getting the Data
 
-Install the AWS CLI tool:
-
-`pip install awscli`
+If necessary, create an AWS account, install the AWS CLI tool (`pip install awscli`), and set up your AWS config and credentials (`aws configure`).
 
 All of the commands below are written to run from the repo root.
 
@@ -20,7 +18,7 @@ aws s3 cp s3://autofocus/lpz_data/${FILENAME} $(pwd)/data/lpz_2016_2017/
 Unpack the tarfile:
 
 ```bash
-tar -xzf $(pwd)/data/lpz_2016_2017/${FILENAME}
+tar -xvf $(pwd)/data/lpz_2016_2017/${FILENAME}
 ```
 
 Delete the tarfile:
