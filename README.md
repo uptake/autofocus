@@ -1,127 +1,48 @@
-**Note: This repository is being largely rewritten from the ground up on the `reorganize` branch. Minor issues on the `master` bring will not be given high priority, and new contributors may wish to base their work on that branch.**
-
 # Autofocus
 
-This project seeks to make conservation organizations more efficient, primarily by automating the process of labeling images taken by motion-activated "camera traps" according to the kinds of animals that appear in them. See [this article](https://www.uptake.org/autofocus.html) for more information.
+This project seeks to make conservation organizations more efficient by automating the process of labeling images taken by motion-activated "camera traps" according to the kinds of animals that appear in them. See [this article](https://www.uptake.org/impact/special-projects) for more information.
 
-Data is being uploaded to `s3://autofocus`. Providing convenient ways to download a sample data set and the full data set from this location is a top priority.
+## Getting the Data
 
-**Caveats:**
+If necessary, create an AWS account, install the AWS CLI tool (`pip install awscli`), and set up your AWS config and credentials (`aws configure`).
 
-- Data-cleaning code is currently specific to this particular data set. We are aiming to generalize it over time.
-- Computer vision currently uses a lightly modified version of a script from the Tensorflow project. We are aiming to adapt it to perform better specifically for identifying animals in images from motion-activated "camera traps" over time.
+All of the commands below are written to run from the repo root.
 
-## Steps for Training a Camera Traps Model
-
-### 0. download_images.py
-
-#### Example call
-```bash
-python autofocus/download_images.py --local-folder data --bucket autofocus
-```
-
-#### Details
-Downloads all images from an S3 bucket and keeps subdirectory structure intact.
-WARNING: This dataset is over 80 GB.
-
-#### Inputs
-
-- local-folder: path to save files to locally
-- bucket: S3 bucket to copy locally
-- download-tar: Flag of whether to download tar files.
-
-#### Output
-
-`data` with files and structure copied from S3
-
-### 1. preprocess_images.py
-
-#### Example call
+Download a preprocessed version of our primary dataset to `autofocus/data/lpz_2016_2017/processed` (you can change the destination directory if you like):
 
 ```bash
-python autofocus/preprocess_images.py \
---indir data/lpz_data/images_2016 --outdir results/preprocessed_images
+FILENAME=lpz_2016_2017_processed.tar.gz
+aws s3 cp s3://autofocus/lpz_data/${FILENAME} $(pwd)/data/lpz_2016_2017/
 ```
 
-#### Details
-
-Find every file that is recursively contained within `indir` with one of the specified extensions. For each of those files, open it and trim the bottom 198 rows of pixels, which often contains a footer with metadata about the camera and acquisition time. Resize the image so that the smaller of its width and height is 256 pixels, which is large enough for a typical imagenet-pretrained model. Record whether or not it was taken at night based on whether all the channels are the same. Also record the image's mean grayscale brightness so that it is easy to discard washed-out images downstream. (Any additional feature extraction for machine learning purposes should be done downstream -- this script is intended as a preprocessing step, not an analysis step.) Save the resulting image in `outdir`, mirroring the directory structure in `indir`. After all of the images have been processed, save the image paths and properties to `<outdir>/image_properties.csv`.
-
-#### Inputs
-
-- indir: directory that that recursively contains the image files of interest
-- outdir: desired output directory
-- extensions: extensions of image files within indir ("[JPG]" by default)
-
-#### Output
-
-`outdir` directory that contains `<outdir>/image_properties.csv` with fields "filepath", "date", "time", "night" (0 or 1), "mean brightness"; and trimmed, resized copies of every image in `indir` with one of the specified extensions, where the location of each image copy within `outdir` matches the location of the corresponding image within `indir`.
-
-### 2. clean_detections.py
-
-#### Example call
+Unpack the tarfile:
 
 ```bash
-python autofocus/clean_detections.py --detections data/lpz_data/detections_2016.csv \
---image-dir results/preprocessed_images \
---image-properties results/preprocessed_images/image_properties.csv \
---outpath results/detections_clean.csv
+tar -xvf $(pwd)/data/lpz_2016_2017/${FILENAME}
 ```
 
-Concatenate the contents of the input detection files. Update the paths in those detection files to point to the preprocessed images in `image-dir`. Pull in the image properties from the CSV created in the previous step. Save the result.
-
-#### Inputs
-
-- detections: paths to one or more CSV files. Each file is assumed to have columns "ImageDate", "FilePath", "FileName", and "ShortName". The paths in "FilePath" are assumed to begin with two components when split in "\" which are to be replaced with `image_dir`.
-- image-dir: path to directory created in the previous step.
-- image-properties: path to CSV with a "filepath" field that points to the files in `image-dir` and provides additional image properties.
-- outpath: desired output path
-
-#### Output
-
-CSV of cleaned-up detection records, with columns "date", "filepath", "time", "night", "mean_brightness", and one binary column "contains_<label>" for each value in the input "ShortName" column. A given image *may* have the value 1 for multiple label columns.  
-
-### 3. link_images_by_label.py
-
-Create symlinks to images organized into subdirectories according to specified labelmap and conflict resolution rules.
-
-#### Example call
+Delete the tarfile:
 
 ```bash
-python autofocus/link_images_by_label.py \
---detections-path results/detections_clean.csv \
---labelmap-path sample_data/raccoon_labelmap.json \
---label-priority-path sample_data/label_priority.txt --outdir results/raccoon_symlinks
+rm $(pwd)/data/lpz_2016_2017/${FILENAME}
 ```
 
-#### Inputs
+This dataset contains approximately 80,000 images and a CSV of labels and image metadata. It occupies 17.1GB uncompressed, so you will need about 40GB free for the downloading and untarring process. The images have been preprocessed by trimming the bottom 198 pixels (which often contains a metadata footer that could only mislead a machine learning model) and resizing to be 512 pixels along their shorter dimension. In addition, the labels that have been cleaned up and organized.
 
-- detections: path to CSV with fields "filepath" that points to image files and "label" that gives associated labels.
-- labelmap (optional): path to JSON file that maps labels used in input CSV labels to labels to be used for classification. For instance, one might wish to combine all but one of the input labels and train a binary classifier. Any labels present in the CSV at detections_path not contained in this file will be left unchanged.
-- label-priority (optional): path to text file that specifies label priorities for files with multiple labels. Each line provides one label ordering in the format `a > b`, where a and b are labels that are expected to be present in the detections after applying the labelmap. For instance, `human > empty` means that if a file has both labels "human" and "empty", then the "empty" label should be discarded. The special symbol `*` can be used to indicate all other labels -- for instance `* > empty` indicates that "empty" should always be dropped when it is one of multiple labels. Note: these rules are applied in the order in which they are listed, which can make a difference if they contain cycles (e.g. "human > dog", "dog > empty", "empty > human").
-- keep-unresolved (flag): By default, any files that have multiple labels after applying any priority rules specified in `label_priority_config_path` are ignored rather than being copied multiple times, so that a classification model can be appropriately applied. If the `keep-unresolved` flag is set, then they will be copied multiple times instead, which would be appropriate for developing multiple binary classifiers, e.g. with multitask learning.
-- outdir: desired output directory
+If you would like to work with data that has not been preprocessed as described above, replace `FILENAME=lpz_2016_2017_processed.tar.gz` with `FILENAME=data_2016_2017.tar.gz`. You will need to have about 100GB free to download and untar the raw data.
 
-#### Output
+`autofocus/data/lpz_2016_2017/process_raw.py` contains the code that was used to generate the processed data from the raw data.
 
-Within `outdir`, creates one directory for each label in the dataset after applying the provided labelmap and label priority rules and dropping remaining files with multiple labels if keep-unresolved is not set. Creates symlinks within each of those directories for the corresponding files.
+## Getting a Model
 
-### 4. retrain.py
+Download a trained multilabel fast.ai model: 
 
-Retrain the classifier layer of an imagenet-trained convolutional neural network.
-
-#### Example call
-
-```
-python autofocus/retrain.py --image_dir results/raccoon_symlinks
+```bash
+aws s3 cp s3://autofocus/models/multilabel_model_20190407.pkl $(pwd)/autofocus/predict/models
 ```
 
-Run `autofocus/retrain.py -h` for documentation. Uses MLFlow for run tracking; run `mlflow ui` to see results.
+`autofocus/train_model/train_multilabel_model.ipynb` contains the code that was used to train and evaluate this model.
 
-## Compatibility
+## Serving Predictions
 
-This package was developed using Python 3.6.
-
-#### References
-
-* [How to Retrain an Image Classifier for New Categories (Tensorflow)](https://www.tensorflow.org/hub/tutorials/image_retraining)
+`autofocus/predict` contains code for a Flask app that serves predictions from a trained fast.ai model. See the README in that directory for more information.
