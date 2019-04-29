@@ -101,11 +101,11 @@ def _extract_seasons(file_name):
     # For parsing the seasons from the File Names
     # The season names are based on the codes provided by Lincoln Park Zoo researchers
     file_name = file_name.split("-")[3]
-    if file_name.startswith("JA", "WI"):
+    if file_name.startswith(("JA", "WI")):
         return "Winter"
-    elif file_name.startswith("AP", "SP"):
+    elif file_name.startswith(("AP", "SP")):
         return "Spring"
-    elif file_name.startswith("JU", "SU"):
+    elif file_name.startswith(("JU", "SU")):
         return "Summer"
     else:
         return "Fall"
