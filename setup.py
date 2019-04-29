@@ -1,40 +1,30 @@
-import setuptools
+from pathlib import Path
+from setuptools import find_packages, setup
 
-with open('README.md', 'r') as f:
-    my_long_description = f.read()
+THIS_FILE_DIR = Path(__file__).resolve().parent
+VERSION_FILE_PATH = THIS_FILE_DIR / "autofocus" / "_version.py"
+README_FILE_PATH = THIS_FILE_DIR / "README.md"
+
+with open(VERSION_FILE_PATH, "r") as version_file:
+    exec(version_file.read())
+
+with open(README_FILE_PATH) as r:
+    readme = r.read()
+
+regular_packages = ["boto3", "creevey", "opencv-contrib-python", "pandas", "tqdm"]
+dev_packages = ["black", "flake8", "flake8-docstrings", "flake8-import-order"]
 
 
-documentation_packages = []
-regular_packages = [
-    'boto3',
-    'mlflow',
-    'pandas',
-    'pillow',
-    'psutil',
-    'tensorflow',
-    'tensorflow_hub'
-]
-testing_packages = [
-    'pytest'
-]
-
-setuptools.setup(
-    name='autofocus',
-    version='0.2.0',
-    url='https://github.com/UptakeOpenSource/autofocus',
-    python_requires='>=3.6.0',
-
-    author='Greg Gandenberger',
-    author_email='gsganden@gmail.com',
-
-    description='Code for doing computer vision on camera trap images',
-    long_description=my_long_description,
-
-    packages=setuptools.find_packages(),
-    test_suite='tests',
-
+setup(
+    name="autofocus",
+    version=__version__,
+    description="Camera traps image classification",
+    long_description=readme,
+    packages=find_packages(exclude=("tests")),
     install_requires=regular_packages,
-    extras_require={
-        'testing': testing_packages + regular_packages
-    }
+    extras_require={"dev": regular_packages + dev_packages},
+    author="Greg Gandenberger",
+    author_email="gsganden@gmail.com",
+    url="https://github.com/UptakeOpenSource/autofocus",
+    long_description_content_type="text/markdown",
 )

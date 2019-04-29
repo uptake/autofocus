@@ -65,7 +65,6 @@ target/
 
 # IPython Notebook
 *.ipynb_checkpoints
-*.ipynb
 
 # pyenv
 .python-version
@@ -91,3 +90,6 @@ ENV/
 
 # Apple
 .DS_Store
+
+# Image files
+**/*.JPG
