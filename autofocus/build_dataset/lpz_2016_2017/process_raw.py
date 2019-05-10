@@ -6,7 +6,7 @@ from pathlib import Path
 import time
 
 from creevey import CustomReportingPipeline
-from creevey.load_funcs.image import load_image
+from creevey.load_funcs.image import load_image_from_disk
 from creevey.ops.image import resize
 from creevey.path_funcs import replace_dir
 from creevey.util.image import find_image_files
@@ -70,7 +70,7 @@ def _process_images():
     ops = [trim_footer, resize_min_dim, record_is_grayscale, record_mean_brightness]
 
     trim_resize_pipeline = CustomReportingPipeline(
-        load_func=load_image, ops=ops, write_func=write_image
+        load_func=load_image_from_disk, ops=ops, write_func=write_image
     )
 
     image_paths = find_image_files(RAW_DIR)
