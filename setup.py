@@ -11,7 +11,7 @@ with open(VERSION_FILE_PATH, "r") as version_file:
 with open(README_FILE_PATH) as r:
     readme = r.read()
 
-regular_packages = ["boto3", "creevey", "opencv-contrib-python", "pandas", "tqdm"]
+regular_packages = ["boto3", "creevey", "opencv-contrib-python", "pandas", "tqdm", "urllib3"==1.22]
 dev_packages = ["black", "flake8", "flake8-docstrings", "flake8-import-order"]
 
 
