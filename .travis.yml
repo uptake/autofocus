@@ -4,6 +4,7 @@ install:
 script:
   - python -m pytest
   - black --check
+  - flake8 autofocus
 
 matrix:
   include:
