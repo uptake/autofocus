@@ -5,5 +5,5 @@ Pull Request Checklist
  - [ ] _version.py has been updated.
  - [ ] README and docs have been updated (if applicable).
  - [ ] `pytest` passes locally.
- - [ ] `black autofocus tests --check` passe locallys
+ - [ ] `black autofocus tests --check` passes locally.
  - [ ] `flake8 autofocus tests` passes locally.
