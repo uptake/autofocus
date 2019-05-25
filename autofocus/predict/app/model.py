@@ -1,7 +1,6 @@
 from pathlib import Path
 
 from fastai.vision import load_learner, open_image
-import numpy as np
 
 
 MODEL_DIR = Path(__file__).resolve().parents[1] / "models"
