@@ -2,9 +2,8 @@
 install:
   - pip install ".[dev]"
 script:
-  - pytest
-  - flake8 autofocus tests
-  - black autofocus tests --check
+  - ./.ci/test.sh
+
 
 matrix:
   include:
