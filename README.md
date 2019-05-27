@@ -1,3 +1,5 @@
+[![Travis Build Status](https://img.shields.io/travis/uptakeopensource/autofocus.svg?label=travis&logo=travis&branch=master)](https://travis-ci.org/uptakeopensource/autofocus)
+
 # Autofocus
 
 This project seeks to make conservation organizations more efficient by automating the process of labeling images taken by motion-activated "camera traps" according to the kinds of animals that appear in them. See [this article](https://www.uptake.org/impact/special-projects) for more information.

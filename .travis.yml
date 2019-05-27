@@ -2,7 +2,8 @@
 install:
   - pip install ".[dev]"
 script:
-  - python -m pytest
+  - ./.ci/test.sh
+
 
 matrix:
   include:

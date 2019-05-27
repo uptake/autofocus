@@ -1,12 +1,12 @@
-import json
 import os
 import time
-
-from flask import Flask, request, jsonify, make_response
-from werkzeug import secure_filename
-from .model import predict_single, predict_multiple
-from .utils import allowed_file, list_zip_files, filter_image_files
 from zipfile import ZipFile
+
+from flask import Flask, jsonify, make_response, request
+from werkzeug import secure_filename
+
+from .model import predict_multiple, predict_single
+from .utils import allowed_file, filter_image_files, list_zip_files
 
 # We are going to upload the files to the server as part of the request, so set tmp folder here.
 UPLOAD_FOLDER = "/tmp/"
@@ -19,6 +19,7 @@ app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
 @app.route("/predict", methods=["GET", "POST"])
 def classify_single():
+    """Classify a single image"""
     if request.method == "POST":
         file = request.files["file"]
 
@@ -51,6 +52,7 @@ def classify_single():
 
 @app.route("/predict_zip", methods=["GET", "POST"])
 def classify_zip():
+    """Classify all images from a zip file"""
     if request.method == "POST":
         file = request.files["file"]
 

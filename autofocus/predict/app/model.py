@@ -1,7 +1,6 @@
 from pathlib import Path
 
 from fastai.vision import load_learner, open_image
-import numpy as np
 
 
 MODEL_DIR = Path(__file__).resolve().parents[1] / "models"
@@ -27,4 +26,3 @@ def predict_multiple(path_list):
 if __name__ == "__main__":
     test_image_path = Path(__file__).parent / "test/flower.jpeg"
     prediction = predict_single(test_image_path)
-    breakpoint()

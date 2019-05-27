@@ -2,46 +2,51 @@
 # Note:
 #   1. This assumes that the image_classifier_api is running (i.e., using docker compose up)
 #   2. It also assumes that the api address is at 127.0.0.1 (which should be the case)
-
-import requests
-import pandas as pd
 import os
+
+import pandas as pd
+import requests
 
 
 #####################
 # SINGLE FILE EXAMPLE#
 #####################
 """
-The example below illustrates how to pass a set of files to the single file endpoint
-If you have a lot of images, this will  be a lot slower than zipping those images into a single file and 
-using the predict_zip endpoint
+The example below illustrates how to pass a set of files to the single
+file endpoint. If you have a lot of images, this will  be a lot slower
+than zipping those images into a single file and  using the predict_zip
+endpoint.
 """
 
 
 def allowed_file(filename, allowed_extensions):
     """
-  Check for whether a filename is in the ALLOWED_EXTENSIONS
-  Args:
-      filename (str): filename to check
+    Check for whether a filename is in the ALLOWED_EXTENSIONS
 
-  Returns:
-      bool: whether the filename is in allowed extensions
+    Parameters
+    ----------
+    filename (str): filename to check
 
-  """
+    Returns
+    -------
+    bool: whether the filename is in allowed extensions
+    """
     return "." in filename and filename.rsplit(".", 1)[1] in allowed_extensions
 
 
 def find_image_files(search_dir, img_extensions=["jpeg", "jpg", "png", "bmp", "gif"]):
     """
-  Find all image files recursively starting in search dir
-  Args:
-      search_dir(str): path of directory to start from
-      img_extensions(list): file extensions for image files
+    Find all image files recursively starting in search dir
 
-  Returns:
-      file_list(list): list of paths containing img_extensions
+    Parameters
+    ----------
+    search_dir(str): path of directory to start from
+    img_extensions(list): file extensions for image files
 
-  """
+    Returns
+    -------
+    file_list(list): list of paths containing img_extensions
+    """
     file_list = [
         os.path.join(dp, f)
         for dp, dn, fn in os.walk(os.path.expanduser(search_dir))
@@ -72,10 +77,11 @@ predictions = pd.DataFrame(response_list)
 #################
 
 """
-The example below illustrates how to pass a single zipfile to the predict_zip endpoint
-This will be much faster if you have a lot of images, although their may be some limitations on the size of the file
-you send in. 
-Note: that the zipfile enpoint can handle directories and subdirectories, as well as files that aren't images
+The example below illustrates how to pass a single zipfile to the
+predict_zip endpoint. This will be much faster if you have a lot of
+images, although therer may be some limitations on the size of the file
+you send in.  Note: that the zipfile enpoint can handle directories and
+subdirectories, as well as files that aren't images.
 """
 
 uri = "http://127.0.0.1/predict_zip"
