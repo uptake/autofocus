@@ -28,7 +28,7 @@ def record_is_grayscale(
 
     Side effect
     -----------
-    Adds a "mean_brightness" items to log_dict[inpath]
+    Adds a "grayscale" item to log_dict[inpath]
 
     """
     is_grayscale = has_channels_equal(image)
@@ -42,11 +42,7 @@ def record_mean_brightness(
     image: np.array, inpath: PathOrStr, log_dict: DefaultDict[str, dict]
 ) -> np.array:
     """
-    Record whether image is grayscale.
-
-    In this dataset, grayscale images have been saved as three-channel
-    images with all three channels equal, so this function checks for
-    equality across channels rather than the number of channels.
+    Record the mean brightness of image.
 
     Parameters
     ----------

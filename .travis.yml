@@ -1,8 +1,9 @@
 # Stuff shared by all builds
 install:
-  - python setup.py install
+  - pip install ".[dev]"
 script:
-  - python -m pytest
+  - ./.ci/test.sh
+
 
 matrix:
   include:

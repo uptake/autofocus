@@ -26,4 +26,3 @@ def predict_multiple(path_list):
 if __name__ == "__main__":
     test_image_path = Path(__file__).parent / "test/flower.jpeg"
     prediction = predict_single(test_image_path)
-    breakpoint()

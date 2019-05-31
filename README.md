@@ -1,3 +1,5 @@
+[![Travis Build Status](https://img.shields.io/travis/uptakeopensource/autofocus.svg?label=travis&logo=travis&branch=master)](https://travis-ci.org/uptakeopensource/autofocus)
+
 # Autofocus
 
 This project uses deep learning computer vision to label images taken by motion-activated "camera traps" according to the animals they contain. Accurate models for this labeling task can address a major bottleneck for wildlife conservation efforts.
