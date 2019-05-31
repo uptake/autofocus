@@ -2,7 +2,13 @@
 
 # Autofocus
 
-This project seeks to make conservation organizations more efficient by automating the process of labeling images taken by motion-activated "camera traps" according to the kinds of animals that appear in them. See [this article](https://www.uptake.org/impact/special-projects) for more information.
+This project uses deep learning computer vision to label images taken by motion-activated "camera traps" according to the animals they contain. Accurate models for this labeling task can address a major bottleneck for wildlife conservation efforts.
+
+## Further Reading
+
+- [Uptake.org Autofocus Case Study](https://www.uptake.org/impact/special-projects)
+- [Machine Learning Meets Wildlife Conservation](https://www.lpzoo.org/blog/machine-learning-meets-wildlife-conservation)
+
 
 ## Getting the Data
 
