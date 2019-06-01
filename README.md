@@ -9,14 +9,17 @@ This project uses deep learning computer vision to label images taken by motion-
 - [Uptake.org Autofocus Case Study](https://www.uptake.org/impact/special-projects)
 - [Machine Learning Meets Wildlife Conservation](https://www.lpzoo.org/blog/machine-learning-meets-wildlife-conservation)
 
+## 2016-2017 Dataset
 
-## Getting the Data
+The work that has been done for this project so far has focused on a set of images provided by the Lincoln Park Zoo's Urban Wildlife Institute that were taken in the Chicago area in mid-summer 2016 and 2017.
+
+### Getting the Data
 
 If necessary, create an AWS account, install the AWS CLI tool (`pip install awscli`), and set up your AWS config and credentials (`aws configure`).
 
 All of the commands below are written to run from the repo root.
 
-Download a preprocessed version of our primary dataset to `autofocus/data/lpz_2016_2017/processed` (you can change the destination directory if you like):
+Download a preprocessed version of this dataset to `autofocus/data/lpz_2016_2017/processed` (you can change the destination directory if you like):
 
 ```bash
 FILENAME=lpz_2016_2017_processed.tar.gz
@@ -41,7 +44,7 @@ If you would like to work with data that has not been preprocessed as described 
 
 `autofocus/build_dataset/lpz_2016_2017/process_raw.py` contains the code that was used to generate the processed data from the raw data.
 
-## Getting a Model
+### Getting a Model
 
 Download a trained multilabel fast.ai model: 
 
@@ -51,6 +54,37 @@ aws s3 cp s3://autofocus/models/multilabel_model_20190407.pkl $(pwd)/autofocus/p
 
 `autofocus/train_model/train_multilabel_model.ipynb` contains the code that was used to train and evaluate this model.
 
-## Serving Predictions
+### Serving Predictions
 
 `autofocus/predict` contains code for a Flask app that serves predictions from a trained fast.ai model. See the README in that directory for more information.
+
+## 2012-2014 Dataset
+
+We are starting work on a second set of images provided by the Lincoln Park Zoo's Urban Wildlife Institute that were taken in the Chicago area taken between 2012 and 2014.
+
+### Getting the Data
+
+If necessary, create an AWS account, install the AWS CLI tool (`pip install awscli`), and set up your AWS config and credentials (`aws configure`).
+
+All of the commands below are written to run from the repo root.
+
+Download this dataset to `autofocus/data/lpz_2012_2014/raw` (you can change the destination directory if you like):
+
+```bash
+FILENAME=lpz_2012-2014.tar.gz
+aws s3 cp s3://autofocus/lpz_data/${FILENAME} $(pwd)/data/lpz_2012-2014/
+```
+
+Unpack the tarfile:
+
+```bash
+tar -xvf $(pwd)/data/lpz_2012-2014/${FILENAME}
+```
+
+Delete the tarfile:
+
+```bash
+rm $(pwd)/data/lpz_2012-2014/${FILENAME}
+```
+
+This dataset contains approximately 75,000 images (227 x 227 pixels) and a CSV of labels and image metadata. It takes up 7.9GB uncompressed.
