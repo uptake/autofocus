@@ -60,7 +60,7 @@ aws s3 cp s3://autofocus/models/multilabel_model_20190407.pkl $(pwd)/autofocus/p
 
 ## 2012-2014 Dataset
 
-We are starting work on a second set of images provided by the Lincoln Park Zoo's Urban Wildlife Institute that were taken in the Chicago area taken between 2012 and 2014.
+We are starting work on an additional set of images provided by the Lincoln Park Zoo's Urban Wildlife Institute that were taken in the Chicago area between 2012 and 2014.
 
 ### Getting the Data
 
