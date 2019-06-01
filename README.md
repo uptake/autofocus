@@ -88,3 +88,34 @@ rm $(pwd)/data/lpz_2012-2014/${FILENAME}
 ```
 
 This dataset contains approximately 75,000 images (227 x 227 pixels) and a CSV of labels and image metadata. It takes up 7.9GB uncompressed.
+
+## 2018 Dataset
+
+We are starting work on an additional set of images provided by the Lincoln Park Zoo's Urban Wildlife Institute that were taken in the Chicago area between 2018. This dataset is different in that the images are taken in three-image bursts and labels have not been provided.
+
+### Getting the Data
+
+If necessary, create an AWS account, install the AWS CLI tool (`pip install awscli`), and set up your AWS config and credentials (`aws configure`).
+
+All of the commands below are written to run from the repo root.
+
+Download this dataset to `autofocus/data/lpz_2018/raw` (you can change the destination directory if you like):
+
+```bash
+FILENAME=lpz_2018.tar.gz
+aws s3 cp s3://autofocus/lpz_data/${FILENAME} $(pwd)/data/lpz_2018/
+```
+
+Unpack the tarfile:
+
+```bash
+tar -xvf $(pwd)/data/lpz_2018/${FILENAME}
+```
+
+Delete the tarfile:
+
+```bash
+rm $(pwd)/data/lpz_2018/${FILENAME}
+```
+
+This dataset contains approximately TK images. It takes up TK uncompressed.
