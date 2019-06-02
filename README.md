@@ -25,7 +25,7 @@ aws s3 cp s3://autofocus/lpz_data/${FILENAME} $(pwd)/data/
 Unpack the tarfile:
 
 ```bash
-tar -xvf $(pwd)/data/${FILENAME} -C $(pwd)/data/ 
+tar -xvf $(pwd)/data/${FILENAME} -C $(pwd)/data/lpz_2016_2017/ 
 ```
 
 Delete the tarfile:
@@ -38,9 +38,13 @@ This dataset contains approximately 80,000 images and a CSV of labels and image 
 
 If you would like to work with data that has not been preprocessed as described above, replace `FILENAME=lpz_2016_2017_processed.tar.gz` with `FILENAME=data_2016_2017.tar.gz`. You will need to have about 100GB free to download and untar the raw data. `autofocus/build_dataset/lpz_2016_2017/process_raw.py` contains the code that was used to generate the processed data from the raw data.
 
-A second dataset from the Lincoln Park Zoo's Urban Wildlife Institute contains approximately 75,000 images (227 x 227 pixels) and a CSV of labels and image metadata from the Chicago area in 2012-2014. It takes up 7.9GB uncompressed. To get this data, follow the same steps as for the 2016-2017 dataset, but replace `FILENAME=lpz_2016_2017_processed.tar.gz` with `FILENAME=lpz_2012-2014.tar.gz`.
+A second dataset from the Lincoln Park Zoo's Urban Wildlife Institute contains approximately 75,000 images (227 x 227 pixels) and a CSV of labels and image metadata from the Chicago area in 2012-2014. It takes up 7.9GB uncompressed. To get this data, follow the same steps as for the 2016-2017 dataset, but replace `FILENAME=lpz_2016_2017_processed.tar.gz` with `FILENAME=lpz_2012-2014.tar.gz`, and use this command to unpack the tarfile.
 
-A third dataset from the Lincoln Park Zoo's Urban Wildlife Institute contains unlabeled three-image bursts from 2018. It takes up 5.7GB uncompressed. To get this data, follow the same steps but with `FILENAME=lpz_2018.tar.gz`.
+```bash
+tar -xvf $(pwd)/data/${FILENAME} -C $(pwd)/data/
+```
+
+A third dataset from the Lincoln Park Zoo's Urban Wildlife Institute contains unlabeled three-image bursts from 2018. It takes up 5.7GB uncompressed. To get this data, follow the same steps as for the 2012-2014 dataset, but replace `FILENAME=lpz_2016_2017_processed.tar.gz` with `FILENAME=lpz_2018.tar.gz`.
 
 ### Getting a Model
 
