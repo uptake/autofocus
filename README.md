@@ -9,7 +9,7 @@ This project uses deep learning computer vision to label images taken by motion-
 - [Uptake.org Autofocus Case Study](https://www.uptake.org/impact/special-projects)
 - [Machine Learning Meets Wildlife Conservation](https://www.lpzoo.org/blog/machine-learning-meets-wildlife-conservation)
 
-### Getting the Data
+## Getting the Data
 
 If necessary, create an AWS account, install the AWS CLI tool (`pip install awscli`), and set up your AWS config and credentials (`aws configure`).
 
@@ -46,7 +46,7 @@ tar -xvf $(pwd)/data/${FILENAME} -C $(pwd)/data/
 
 A third dataset from the Lincoln Park Zoo's Urban Wildlife Institute contains unlabeled three-image bursts from 2018. It takes up 5.7GB uncompressed. To get this data, follow the same steps as for the 2012-2014 dataset, but replace `FILENAME=lpz_2016_2017_processed.tar.gz` with `FILENAME=lpz_2018.tar.gz`.
 
-### Getting a Model
+## Getting a Model
 
 Download a multilabel fast.ai model: 
 
@@ -56,6 +56,6 @@ aws s3 cp s3://autofocus/models/multilabel_model_20190407.pkl $(pwd)/autofocus/p
 
 `autofocus/train_model/train_multilabel_model.ipynb` contains the code that was used to train and evaluate this model.
 
-### Serving Predictions
+## Serving Predictions
 
 `autofocus/predict` contains code for a Flask app that serves predictions from a trained fast.ai model. See the README in that directory for more information.
