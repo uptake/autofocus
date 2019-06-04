@@ -1,4 +1,4 @@
-[![Travis Build Status](https://img.shields.io/travis/uptakeopensource/autofocus.svg?label=travis&logo=travis&branch=master)](https://travis-ci.org/uptakeopensource/autofocus)
+[![Travis Build Status](https://img.shields.io/travis/uptake/autofocus.svg?label=travis&logo=travis&branch=master)](https://travis-ci.org/uptake/autofocus)
 
 # Autofocus
 
