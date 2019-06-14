@@ -1,6 +1,8 @@
-[![Travis Build Status](https://img.shields.io/travis/uptakeopensource/autofocus.svg?label=travis&logo=travis&branch=master)](https://travis-ci.org/uptakeopensource/autofocus)
+[![Travis Build Status](https://img.shields.io/travis/uptake/autofocus.svg?label=travis&logo=travis&branch=master)](https://travis-ci.org/uptake/autofocus)
 
 # Autofocus
+
+![coyote](./gallery/coyote1.jpg)
 
 This project uses deep learning computer vision to label images taken by motion-activated "camera traps" according to the animals they contain. Accurate models for this labeling task can address a major bottleneck for wildlife conservation efforts.
 
@@ -59,3 +61,11 @@ aws s3 cp s3://autofocus/models/multilabel_model_20190407.pkl $(pwd)/autofocus/p
 ## Serving Predictions
 
 `autofocus/predict` contains code for a Flask app that serves predictions from a trained fast.ai model. See the README in that directory for more information.
+
+## Example Images
+
+![buck](./gallery/buck.jpeg)
+
+![fawn](./gallery/fawn.jpeg)
+
+![racoons](./gallery/racoons.jpeg)

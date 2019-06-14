@@ -7,6 +7,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 ### Added
  - 2012-2014 and 2018 Lincoln Park Zoo datasets
 
+# [1.0.4] - 2019-6-3
+### Fixed
+ - Travis badge URLs after repo moved
+### Added
+ - Sample images in README
+
 # [1.0.3] - 2019-5-31
 ### Added
  - CODEOWNERS file
