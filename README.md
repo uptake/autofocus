@@ -11,12 +11,12 @@ This project uses deep learning computer vision to label images taken by motion-
 - [Uptake.org Autofocus Case Study](https://www.uptake.org/impact/special-projects)
 - [Machine Learning Meets Wildlife Conservation](https://www.lpzoo.org/blog/machine-learning-meets-wildlife-conservation)
 
-## Getting Predictions
+## Getting the App
 
 If you just want to get labels for your images, you can use the following steps to run a service that passes images through a trained model.
 
 1. Make sure [Docker](https://www.docker.com/get-started) is installed and running.
-2. `docker pull gsganden/autofocus_serve` to pull the app image.
+2. `docker pull gsganden/autofocus_serve` to pull the app image (~4 GB).
 3. `docker run autofocus_serve` to start the app.
 4. Make POST requests against the app to get predictions. For instance, you can send a single image to the app with `curl -F "file=@PATH_TO_FILE" -X POST http://127.0.0.1/predict`, replacing "PATH_TO_FILE" with the path to an image file on your machine. Or send a zip file containing many images to the app with `curl -F "file=@PATH_TO_FILE" -X POST http://127.0.0.1/predict_zip`. Or see `autofocus/predict/example_post.py` or `autofocus/predict/example_post.R` for example scripts that make requests using Python and R, respectively.
 
@@ -48,13 +48,23 @@ The app will respond with a JSON object that indicates the model's probability t
 }
 ```
 
+## Getting the Model
+
+The app described above uses a multilabel fast.ai model. You can download that model directly with the following command. This command was written to run from the repo root. 
+
+```bash
+aws s3 cp s3://autofocus/models/multilabel_model_20190407.pkl $(pwd)/autofocus/predict/models
+```
+
+`autofocus/train_model/train_multilabel_model.ipynb` contains the code that was used to train and evaluate this model.
+
 ## Getting the Data
 
-If necessary, create an AWS account, install the AWS CLI tool (`pip install awscli`), and set up your AWS config and credentials (`aws configure`).
+The model described above was trained on a set of images provided by the Lincoln Park Zoo's Urban Wildlife Institute that were taken in the Chicago area in mid-summer 2016 and 2017. If you wish to train your own model, you can use the instructions below to download that dataset and other related datasets.
 
-All of the commands below are written to run from the repo root.
+If necessary, create an AWS account, install the AWS CLI tool (`pip install awscli`), and set up your AWS config and credentials (`aws configure`). All of the commands below are written to run from the repo root.
 
-The work that has been done for this project so far has focused on a set of images provided by the Lincoln Park Zoo's Urban Wildlife Institute that were taken in the Chicago area in mid-summer 2016 and 2017. Use this commend to download a preprocessed version of that dataset to `autofocus/data/` (you can change the destination directory if you like):
+Use this commend to download a preprocessed version of the Lincoln Park Zoo 2016-2017 dataset to `autofocus/data/` (you can change the destination directory if you like):
 
 ```bash
 FILENAME=lpz_2016_2017_processed.tar.gz
@@ -85,20 +95,6 @@ tar -xvf $(pwd)/data/${FILENAME} -C $(pwd)/data/
 ```
 
 A third dataset from the Lincoln Park Zoo's Urban Wildlife Institute contains unlabeled three-image bursts from 2018. It takes up 5.7GB uncompressed. To get this data, follow the same steps as for the 2012-2014 dataset, but replace `FILENAME=lpz_2016_2017_processed.tar.gz` with `FILENAME=lpz_2018.tar.gz`.
-
-## Getting a Model
-
-Download a multilabel fast.ai model: 
-
-```bash
-aws s3 cp s3://autofocus/models/multilabel_model_20190407.pkl $(pwd)/autofocus/predict/models
-```
-
-`autofocus/train_model/train_multilabel_model.ipynb` contains the code that was used to train and evaluate this model.
-
-## Serving Predictions
-
-`autofocus/predict` contains code for a Flask app that serves predictions from a trained fast.ai model. See the README in that directory for more information.
 
 ## Example Images
 
