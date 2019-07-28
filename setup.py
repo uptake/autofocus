@@ -12,7 +12,13 @@ with open(README_FILE_PATH) as r:
     readme = r.read()
 
 regular_packages = ["boto3", "creevey", "opencv-contrib-python", "pandas", "tqdm"]
-dev_packages = ["black", "flake8", "flake8-docstrings", "flake8-import-order"]
+dev_packages = [
+    "black",
+    "flake8",
+    "flake8-docstrings",
+    "flake8-import-order",
+    "pydocstyle<4.0.0",
+]
 
 
 setup(
