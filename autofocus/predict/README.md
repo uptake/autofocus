@@ -16,7 +16,7 @@ The app is run with gunicorn with a proxy setup through nginx. The api runs on 1
 3. Make a request:
     - single image file:
         - `curl -F "file=@PATH_TO_FILE" -X POST http://127.0.0.1/predict`
-        - `curl -F "file=@./test_data/flower.jpeg" -X POST http://127.0.0.1/predict`
+        - `curl -F "file=@../../gallery/fawn.jpeg" -X POST http://127.0.0.1/predict`
     
     - zip file containing images:
         - `curl -F "file=@PATH_TO_FILE" -X POST http://127.0.0.1/predict_zip`

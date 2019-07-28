@@ -17,9 +17,9 @@ def predict_single(path):
 
 
 def predict_multiple(path_list):
-    predictions = []
+    predictions = {}
     for path in path_list:
-        predictions.append(predict_single(path))
+        predictions[path] = predict_single(path)
     return predictions
 
 
