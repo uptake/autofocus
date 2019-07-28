@@ -48,6 +48,8 @@ The app will respond with a JSON object that indicates the model's probability t
 }
 ```
 
+The `predict_zip` endpoint returns a JSON object mapping file paths to model probabilities formatted as above.
+
 ## Getting the Model
 
 The app described above uses a multilabel fast.ai model. You can download that model directly with the following command. This command was written to run from the repo root. 
@@ -102,4 +104,4 @@ A third dataset from the Lincoln Park Zoo's Urban Wildlife Institute contains un
 
 ![fawn](./gallery/fawn.jpeg)
 
-![racoons](./gallery/racoons.jpeg)
+![racoons](gallery/raccoons.jpeg)
