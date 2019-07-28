@@ -26,5 +26,5 @@ matrix:
         - conda config --set always_yes yes --set changeps1 no
         - conda update -q conda
         - conda info -a
-        - conda create -q -n testenv python=3.6.1 nose pytest pydocstyle<4.0.0
+        - conda create -q -n testenv python=3.6.1 nose pytest
         - source activate testenv
