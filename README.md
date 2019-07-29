@@ -48,7 +48,7 @@ For a single image, the app will respond with a JSON object that indicates the m
 }
 ```
 
-The `predict_zip` endpoint returns a JSON object mapping file paths to model probabilities formatted as above.
+The `/predict_zip` endpoint returns a JSON object mapping file paths to model probabilities formatted as above.
 
 ## Getting the Model
 
