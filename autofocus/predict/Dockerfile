@@ -16,5 +16,5 @@ WORKDIR /image_api
 
 RUN python -m pip install -r /image_api/requirements.txt
 
-EXPOSE 8080
-CMD ["gunicorn", "--bind", "0.0.0.0:8080", "app.app:app" ]
+EXPOSE 8000
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "app.app:app" ]
