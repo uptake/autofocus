@@ -3,6 +3,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
+# [1.2.0] - 2019-7-28
+### Changed
+ - Prediction service app is available on Dockerhub.
+ - Prediction service no longer uses `nginx`.
+
 # [1.1.0] - 2019-6-1
 ### Added
  - 2012-2014 and 2018 Lincoln Park Zoo datasets

@@ -17,9 +17,10 @@ def predict_single(path):
 
 
 def predict_multiple(path_list):
-    predictions = []
+    predictions = {}
     for path in path_list:
-        predictions.append(predict_single(path))
+        path_without_tmp = Path(*Path(path).parts[2:])
+        predictions[str(path_without_tmp)] = predict_single(path)
     return predictions
 
 
