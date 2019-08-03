@@ -5,7 +5,7 @@ Pull Request Checklist
  - [ ] Pull request [uses keywords](https://help.github.com/en/articles/closing-issues-using-keywords) to close relevant [issues](https://github.com/uptake/autofocus/issues).
  - [ ] Pull request includes unit tests for any new functionality.
  - [ ] README and docs have been updated.
- - [ ] `./.ci/test.sh` passes locally.
+ - [ ] `./.ci/local_checks.sh` passes locally. (The app must be running. See `README.md` for instructions.)
 
 Maintainer's responsibilities:
 - [ ] `_version.py` has been updated.
