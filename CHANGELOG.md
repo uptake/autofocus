@@ -3,6 +3,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
+# [1.2.1] - 2019-8-3
+### Fixed
+ - App can accept image files with capitalized extensions (e.g. ".JPG"").
+### Added
+ - Basic tests
+
 # [1.2.0] - 2019-7-28
 ### Changed
  - Prediction service app is available on Dockerhub.
