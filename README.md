@@ -98,6 +98,10 @@ tar -xvf $(pwd)/data/${FILENAME} -C $(pwd)/data/
 
 A third dataset from the Lincoln Park Zoo's Urban Wildlife Institute contains unlabeled three-image bursts from 2018. It takes up 5.7GB uncompressed. To get this data, follow the same steps as for the 2012-2014 dataset, but replace `FILENAME=lpz_2016_2017_processed.tar.gz` with `FILENAME=lpz_2018.tar.gz`.
 
+## Running Tests
+
+To test the app, run `pip install -r requirements-dev.txt` and then `pytest`. The tests assume that the app is running locally on port `8000` according to the instructions above.``
+
 ## Example Images
 
 ![buck](./gallery/buck.jpeg)
