@@ -50,8 +50,6 @@ For a single image, the app will respond with a JSON object that indicates the m
 
 The `/predict_zip` endpoint returns a JSON object mapping file paths to model probabilities formatted as above.
 
-## Developing the App
-
 During development, it is convenient to run the app in debug mode with the local directory mounted to the Docker container so that changes you make locally are reflected in the service immediately:
 
 ```
