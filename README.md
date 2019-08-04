@@ -50,6 +50,18 @@ For a single image, the app will respond with a JSON object that indicates the m
 
 The `/predict_zip` endpoint returns a JSON object mapping file paths to model probabilities formatted as above.
 
+## Developing the App
+
+During development, it is convenient to run the app in debug mode with the local directory mounted to the Docker container so that changes you make locally are reflected in the service immediately:
+
+```
+docker run \
+    -it \
+    -v "${PWD}/autofocus/predict:/image_api" \
+    -p 8000:8000 \
+    gsganden/autofocus_serve python app/app.py
+```
+
 ## Getting the Model
 
 The app described above uses a multilabel fast.ai model. You can download that model directly with the following command. This command was written to run from the repo root. 
