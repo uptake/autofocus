@@ -50,6 +50,16 @@ For a single image, the app will respond with a JSON object that indicates the m
 
 The `/predict_zip` endpoint returns a JSON object mapping file paths to model probabilities formatted as above.
 
+During development, it is convenient to run the app in debug mode with the local directory mounted to the Docker container so that changes you make locally are reflected in the service immediately:
+
+```
+docker run \
+    -it \
+    -v "${PWD}/autofocus/predict:/image_api" \
+    -p 8000:8000 \
+    gsganden/autofocus_serve python app/app.py
+```
+
 ## Getting the Model
 
 The app described above uses a multilabel fast.ai model. You can download that model directly with the following command. This command was written to run from the repo root. 
@@ -97,6 +107,10 @@ tar -xvf $(pwd)/data/${FILENAME} -C $(pwd)/data/
 ```
 
 A third dataset from the Lincoln Park Zoo's Urban Wildlife Institute contains unlabeled three-image bursts from 2018. It takes up 5.7GB uncompressed. To get this data, follow the same steps as for the 2012-2014 dataset, but replace `FILENAME=lpz_2016_2017_processed.tar.gz` with `FILENAME=lpz_2018.tar.gz`.
+
+## Running Tests
+
+To test the app, run `pip install -r requirements-dev.txt` and then `pytest`. The tests assume that the app is running locally on port `8000` according to the instructions above.``
 
 ## Example Images
 

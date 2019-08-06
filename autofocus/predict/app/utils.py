@@ -1,3 +1,4 @@
+from pathlib import Path
 from zipfile import ZipFile
 
 
@@ -11,7 +12,7 @@ def allowed_file(filename, allowed_extensions):
         bool: whether the filename is in allowed extensions
 
     """
-    return "." in filename and filename.rsplit(".", 1)[1] in allowed_extensions
+    return Path(filename).suffix.lower().replace(".", "") in allowed_extensions
 
 
 def list_zip_files(path):
