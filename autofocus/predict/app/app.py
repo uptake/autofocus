@@ -5,8 +5,8 @@ from zipfile import ZipFile
 from flask import Flask, jsonify, make_response, request
 from werkzeug import secure_filename
 
-from model import predict_multiple, predict_single
-from utils import allowed_file, filter_image_files, list_zip_files
+from .model import predict_multiple, predict_single
+from .utils import allowed_file, filter_image_files, list_zip_files
 
 # We are going to upload the files to the server as part of the request, so set tmp folder here.
 UPLOAD_FOLDER = "/tmp/"
