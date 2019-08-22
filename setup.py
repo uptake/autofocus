@@ -33,6 +33,4 @@ setup(
     author_email="gsganden@gmail.com",
     url="https://github.com/UptakeOpenSource/autofocus",
     long_description_content_type="text/markdown",
-    use_scm_version=True,
-    setup_requires=["setuptools_scm"],
 )
