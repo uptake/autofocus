@@ -16,20 +16,20 @@ This project uses deep learning computer vision to label images taken by motion-
 If you just want to get labels for your images, you can use the following steps to run a service that passes images through a trained model.
 
 1. Make sure [Docker](https://www.docker.com/get-started) is installed and running.
-2. Run `docker pull gsganden/autofocus_serve:1.2.2` to download the app image. (Note that it takes up about 4GB of disk space.)
-3. Run `docker run -p 8000:8000 gsganden/autofocus_serve:1.2.2` to start the app.
+2. Run `docker pull gsganden/autofocus_serve:1.2.3` to download the app image. (Note that it takes up about 4GB of disk space.)
+3. Run `docker run -p 8000:8000 gsganden/autofocus_serve:1.2.3` to start the app.
 4. Make POST requests against the app to get predictions.
 
 For instance, with the base of this repo as the working directory you can send the image `fawn.JPG` to the app with this command:
 
 ```bash
-curl -F "file=@./gallery/fawn.JPG" -X POST http://0.0.0.0:8000/predict
+curl -F "file=@./gallery/fawn.JPG" -X POST http://localhost:8000/predict
 ```
 
 Or send the zipped `gallery` directory to the app with this command:
 
 ```bash
-curl -F "file=@gallery.zip" -X POST http://0.0.0.0:8000/predict_zip
+curl -F "file=@gallery.zip" -X POST http://localhost:8000/predict_zip
 ```
 
 See `autofocus/predict/example_post.py` and `autofocus/predict/example_post.R` for example scripts that make requests using Python and R, respectively.
