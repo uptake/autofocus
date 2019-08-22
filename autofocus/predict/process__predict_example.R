@@ -19,22 +19,24 @@ library(zip)
 library(progress)
 library(dplyr)
 
-find_image_files <- function(search_dir, 
-                             image_list = c("jpeg","jpg","bmp","png", "JPG")){
+find_image_files <- function(search_dir = NULL){
   # Utility function to find all recursively find all image files 
   #   starting from a directory
   
   # Args:
   #   search_dir(character): the starting directory path from which to search
-  #     image_list(list): a list of acceptable file formats
   
   # Returns:
   #   image_files(list): list containing the paths of all image files found. 
   #     Each element in this list is a vector of at least 10 images. This split
   #     is done so that the images can be zipped and sent to autofocus.
   
+  valid_extensions <- c("jpeg", "jpg", "bmp", "png")
+  valid_extensions <- c(valid_extensions, toupper(valid_extensions))
+  
   file_list <- list.files(search_dir, recursive = TRUE, full.names = TRUE)
-  image_files <- file_list[grep(paste(image_list, collapse = "|"), file_list)]
+  image_files <- file_list[grep(paste(valid_extensions, 
+                                      collapse = "|"), file_list)]
   image_files <- normalizePath(image_files, winslash = "/")
   # normalize the path, then split into groups of max 10 image
   n_groups <- ceiling(length(image_files) / 10)
