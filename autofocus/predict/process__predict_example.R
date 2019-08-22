@@ -19,7 +19,7 @@ library(zip)
 library(progress)
 library(dplyr)
 
-find_image_files <- function(search_dir = NULL){
+find_image_files <- function(search_dir){
   # Utility function to find all recursively find all image files 
   #   starting from a directory
   
@@ -136,7 +136,7 @@ process_images <- function(image_files){
   }
 
 
-post_zips <- function(processed_images = NULL,
+post_zips <- function(processed_images,
                       uri = "http://localhost:8000/predict_zip"){
   # send the zip files to autofocus
   
@@ -188,7 +188,7 @@ return(response)
 }
 
 
-most_likely <- function(response_frame = NULL){
+most_likely <- function(response_frame){
   # Utility function that provides the best guess from each classification
   
   # Args:
