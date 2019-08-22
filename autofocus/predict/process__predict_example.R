@@ -136,9 +136,6 @@ process_images <- function(image_files){
   }
 
 
-
-
-
 post_zips <- function(processed_images = NULL,
                       uri = "http://localhost:8000/predict_zip"){
   # send the zip files to autofocus
@@ -190,6 +187,7 @@ response <- lapply(response, dplyr::bind_rows) %>% dplyr::bind_rows
 return(response)
 }
 
+
 most_likely <- function(response_frame = NULL){
   # Utility function that provides the best guess from each classification
   
@@ -217,8 +215,6 @@ most_likely <- function(response_frame = NULL){
                       probability = best_prob)
   return(to_return)
 }
-
-
 
 
 # where are the photos located
