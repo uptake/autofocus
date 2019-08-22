@@ -95,17 +95,18 @@ process_images <- function(image_files){
     # count number of files
     num_files <- length(image_file_names)
     
-    file_pattern <- paste0("file_",stringr::str_pad(1:num_files,
-                               width = 2, pad = "0"),"_")
+    file_pattern <- paste0("file_",
+                           stringr::str_pad(1:num_files, width = 2, pad = "0"),
+                           "_")
     # make some temporary file names
-    tmp_name <- tempfile(pattern = file_pattern,
-              fileext = rep('.jpg', num_files))
+    tmp_names <- tempfile(pattern = file_pattern,
+                         fileext = rep('.jpg', num_files))
       
     # sort them
-    tmp_name <- sort(tmp_name)
+    tmp_names <- sort(tmp_names)
     
     # line up temps to actual photo names
-    dict <- sapply(strsplit(tmp_name, "\\\\|/"), function(x) x[length(x)])
+    dict <- sapply(strsplit(tmp_names, "\\\\|/"), function(x) x[length(x)])
     names(dict) <- image_file_names
     
     # Read in iamge, crop 198 from the bottom, resize to 512 pixels tall,
@@ -117,16 +118,16 @@ process_images <- function(image_files){
                                "x",
                                magick::image_info(.)$height-198)) %>% 
         magick::image_resize(., '760x512!') %>% 
-        magick::image_write(., tmp_name[image])
+        magick::image_write(., tmp_names[image])
     }
     
     # zip the temporary files together
     tmp_zip <- tempfile(fileext = ".zip")
-    zip::zipr(tmp_zip, tmp_name)
+    zip::zipr(tmp_zip, tmp_names)
     dict_list[[photo_group]] <- dict
     zip_vector[photo_group] <- tmp_zip
     if(file.exists(tmp_zip)){
-      unlink(tmp_name)
+      unlink(tmp_names)
     }
   }
     
