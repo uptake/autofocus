@@ -10,4 +10,5 @@ Pull Request Checklist
 Maintainer's responsibilities:
 - [ ] `_version.py` has been updated.
 - [ ] `CHANGELOG.md` has been updated.
-- [ ] Updated app container has been pushed, if relevant.
+- [ ] Updated app container has been pushed, if relevant, with current version number.
+- [ ] App container version number has been updated in README.
