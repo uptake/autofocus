@@ -18,7 +18,7 @@ If you just want to get labels for your images, you can use the following steps 
 1. Make sure [Docker](https://www.docker.com/get-started) is installed and running.
 2. Run `docker pull gsganden/autofocus_serve` to download the app image. (Note that it takes up about 4GB of disk space.)
 3. Run `docker run -p 8000:8000 gsganden/autofocus_serve` to start the app.
-4. Make POST requests against the app to get predictions. For instance, with the base of this repo as the working directory you can send the image `fawn.jpeg` to the app with `curl -F "file=@./gallery/fawn.jpeg" -X POST http://0.0.0.0:8000/predict`. Or you can create a zip file of the `gallery` directory and send it to the app with `curl -F "file=@gallery.zip" -X POST http://0.0.0.0:8000/predict_zip`. See `autofocus/predict/example_post.py` or `autofocus/predict/example_post.R` for example scripts that make requests using Python and R, respectively.
+4. Make POST requests against the app to get predictions. For instance, with the base of this repo as the working directory you can send the image `fawn.jpeg` to the app with `curl -F "file=@./gallery/fawn.jpeg" -X POST http://localhost:8000/predict`. Or you can create a zip file of the `gallery` directory and send it to the app with `curl -F "file=@gallery.zip" -X POST http://localhost:8000/predict_zip`. See `autofocus/predict/example_post.py` or `autofocus/predict/example_post.R` for example scripts that make requests using Python and R, respectively.
 
 For a single image, the app will respond with a JSON object that indicates the model's probability that the image contains an animal in each of the categories that it has been trained on. For instance, it might give the following response for an image containing raccoons:
 
