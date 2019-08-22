@@ -83,24 +83,36 @@ process_images <- function(image_files){
 
   for(photo_group in seq.int(length(image_files))){
     
-    file_pattern <- paste0("file_",stringr::str_pad(1:length(image_files[[photo_group]]),
+    # get paths to files
+    image_file_names <- image_files[[photo_group]]
+    
+    # files with 0 kb are corrupt, remove them
+    file_sizes <- file.size(image_file_names)
+    if(any(file_sizes == 0)){
+      image_file_names <- image_file_names[-which(image_file_names == 0)]
+    }
+    
+    # count number of files
+    num_files <- length(image_file_names)
+    
+    file_pattern <- paste0("file_",stringr::str_pad(1:num_files,
                                width = 2, pad = "0"),"_")
     # make some temporary file names
     tmp_name <- tempfile(pattern = file_pattern,
-      fileext = rep('.jpg', 
-      length(image_files[[photo_group]])))
+              fileext = rep('.jpg', num_files))
+      
     # sort them
     tmp_name <- sort(tmp_name)
     
-    # dictionary to line up temps to actual photo
+    # line up temps to actual photo names
     dict <- sapply(strsplit(tmp_name, "\\\\|/"), function(x) x[length(x)])
-    names(dict) <- image_files[[photo_group]]
+    names(dict) <- image_file_names
     
     # Read in iamge, crop 198 from the bottom, resize to 512 pixels tall,
     #  then save as a temporary image.
-    for(image in seq.int(length(image_files[[photo_group]]))){
+    for(image in seq.int(num_files)){
       pb$tick()
-      magick::image_read(image_files[[photo_group]][image]) %>% 
+      magick::image_read(image_file_names[image]) %>% 
         magick::image_crop(., paste0(image_info(.)$width,
                                "x",
                                magick::image_info(.)$height-198)) %>% 
