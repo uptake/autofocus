@@ -47,7 +47,7 @@ find_image_files <- function(search_dir = NULL){
 }
 
 
-process_images <- function(image_files = NULL){
+process_images <- function(image_files){
   # Utility function to preprocess images to be sent to autofocus
   
   # Args:
