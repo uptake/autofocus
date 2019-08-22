@@ -3,9 +3,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
+# [1.2.2] - 2019-8-22
+### Changed
+ - Tests and instructions now refer to "localhost" instead of "0.0.0.0".
+
 # [1.2.1] - 2019-8-3
 ### Fixed
- - App can accept image files with capitalized extensions (e.g. ".JPG"").
+ - App can accept image files with capitalized extensions (e.g. ".JPG").
 ### Added
  - Basic tests
 
