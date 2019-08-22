@@ -75,7 +75,7 @@ process_images <- function(image_files){
   
   cat(paste('Processing', length(unlist(image_files)), 'images...\n'))
   
-  pb <- progress_bar$new(
+  pb <- progress::progress_bar$new(
     format = "Images processed [:bar] :elapsed | eta: :eta",
     total = length(unlist(image_files)),
     width = 60
@@ -100,17 +100,17 @@ process_images <- function(image_files){
     #  then save as a temporary image.
     for(image in seq.int(length(image_files[[photo_group]]))){
       pb$tick()
-      image_read(image_files[[photo_group]][image]) %>% 
-      image_crop(., paste0(image_info(.)$width,
+      magick::image_read(image_files[[photo_group]][image]) %>% 
+        magick::image_crop(., paste0(image_info(.)$width,
                                "x",
-                               image_info(.)$height-198)) %>% 
-        image_resize(., '760x512!') %>% 
-        image_write(., tmp_name[image])
+                               magick::image_info(.)$height-198)) %>% 
+        magick::image_resize(., '760x512!') %>% 
+        magick::image_write(., tmp_name[image])
     }
     
     # zip the temporary files together
     tmp_zip <- tempfile(fileext = ".zip")
-    zipr(tmp_zip, tmp_name)
+    zip::zipr(tmp_zip, tmp_name)
     dict_list[[photo_group]] <- dict
     zip_vector[photo_group] <- tmp_zip
     if(file.exists(tmp_zip)){
@@ -142,7 +142,7 @@ post_zips <- function(processed_images = NULL,
 cat(paste('Posting', length(processed_images$zip), 
           'zip file(s) to autofocus...\n'))
 
-pb <- progress_bar$new(
+pb <- progress::progress_bar$new(
   format = "Files processed [:bar] :elapsed | eta: :eta",
   total = length(unlist(processed_images$zip)),
   width = 60
@@ -152,9 +152,9 @@ response <- vector('list', length(processed_images$zip))
 for(zippy in seq.int(length(processed_images$zip))){
   pb$tick()
   # post to autofocus
-  response[[zippy]] <- fromJSON(postForm(uri, 
-                                        file = fileUpload(processed_images$zip[zippy]),
-                                         .checkParams = FALSE))
+  response[[zippy]] <- jsonlite::fromJSON(RCurl::postForm(uri, 
+                                        file = RCurl::fileUpload(processed_images$zip[zippy]),
+                                        .checkParams = FALSE))
   
   # get the file names from autofocus
   file_names <- strsplit(names(response[[zippy]]), "/")
@@ -173,7 +173,7 @@ for(zippy in seq.int(length(processed_images$zip))){
   }
 }
 # bind the list of lists, then bind the list of tibbles
-response <- lapply(response, bind_rows) %>% bind_rows
+response <- lapply(response, dplyr::bind_rows) %>% dplyr::bind_rows
 return(response)
 }
 
@@ -199,7 +199,7 @@ most_likely <- function(response_frame = NULL){
   species_name <- colnames(response_frame)[best_guess]
   
   # the object to return
-  to_return <- tibble(file = response_frame$file,
+  to_return <- dplyr::tibble(file = response_frame$file,
                       species = species_name,
                       probability = best_prob)
   return(to_return)
