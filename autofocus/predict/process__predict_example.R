@@ -62,11 +62,13 @@ process_images <- function(image_files){
   #          the names of the temporary files while the names are the full 
   #          paths to the file names.
   
-  if(!is(image_files, 'list'))
+  if(!is(image_files, 'list')){
     stop('image_files must be a list.')
+  }
   
-  if(any(sapply(image_files, length)>10))
+  if(any(sapply(image_files, length)>10)){
     stop('One of the elements is image_files has > 10 images.')
+  }
   
   dict_list <- vector('list', length = length(image_files))
   zip_vector <- rep(NA, length(image_files))
