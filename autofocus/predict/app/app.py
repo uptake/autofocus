@@ -8,7 +8,7 @@ from werkzeug import secure_filename
 from .model import predict_multiple, predict_single
 from .utils import allowed_file, filter_image_files, list_zip_files
 
-from .requests import PredictRequestValidator
+from .requests import PredictRequestValidator, PredictZipRequestValidator
 
 # We are going to upload the files to the server as part of the request, so set tmp folder here.
 UPLOAD_FOLDER = "/tmp/"
@@ -23,7 +23,7 @@ app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 def classify_single():
     """Classify a single image"""
     validator = PredictRequestValidator(request)
-    if(not validator.validate()):
+    if not validator.validate():
         validator.abort()
 
     file = request.files["file"]
@@ -46,57 +46,53 @@ def classify_single():
     return jsonify(predictions)
 
 
-@app.route("/predict_zip", methods=["GET", "POST"])
+@app.route("/predict_zip", methods=["POST"])
 def classify_zip():
     """Classify all images from a zip file"""
-    if request.method == "POST":
-        file = request.files["file"]
+    validator = PredictZipRequestValidator(request)
+    if not validator.validate():
+        validator.abort()
 
-        if not file:
-            return "No file sent."
+    file = request.files["file"]
+    filename = secure_filename(file.filename)
+    zip_file_path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
+    file.save(zip_file_path)
 
-        if not file.filename.split(".")[-1] == "zip":
-            return ".zip is the only compression format currently supported"
+    zip_file = ZipFile(zip_file_path)
+    zip_file_list = list_zip_files(zip_file_path)
+    all_images = filter_image_files(zip_file_list, ALLOWED_EXTENSIONS)
 
-        filename = secure_filename(file.filename)
-        zip_file_path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
-        file.save(zip_file_path)
+    if len(all_images) == 0:
+        return "No image files detected in the zip file"
 
-        zip_file = ZipFile(zip_file_path)
-        zip_file_list = list_zip_files(zip_file_path)
-        all_images = filter_image_files(zip_file_list, ALLOWED_EXTENSIONS)
+    # loop through images
+    start = 0
+    increment = 500
+    all_images_len = len(all_images)
 
-        if len(all_images) == 0:
-            return "No image files detected in the zip file"
+    while start < all_images_len:
+        end = start + increment
+        if end > len(all_images):
+            end = len(all_images)
 
-        # loop through images
-        start = 0
-        increment = 500
-        all_images_len = len(all_images)
+        # extract filenames
+        curr_file_list = all_images[start:end]
+        for filename in curr_file_list:
+            zip_file.extract(filename, path=app.config["UPLOAD_FOLDER"])
 
-        while start < all_images_len:
-            end = start + increment
-            if end > len(all_images):
-                end = len(all_images)
+        curr_file_list = [
+            os.path.join(app.config["UPLOAD_FOLDER"], x) for x in curr_file_list
+        ]
 
-            # extract filenames
-            curr_file_list = all_images[start:end]
-            for filename in curr_file_list:
-                zip_file.extract(filename, path=app.config["UPLOAD_FOLDER"])
+        predictions = predict_multiple(curr_file_list)
 
-            curr_file_list = [
-                os.path.join(app.config["UPLOAD_FOLDER"], x) for x in curr_file_list
-            ]
+        # remove files
+        for curr_file in curr_file_list:
+            os.remove(curr_file)
 
-            predictions = predict_multiple(curr_file_list)
+        return make_response(jsonify(predictions))
 
-            # remove files
-            for curr_file in curr_file_list:
-                os.remove(curr_file)
-
-            return make_response(jsonify(predictions))
-
-            start = end + 1
+        start = end + 1
 
 
 @app.route("/hello")
