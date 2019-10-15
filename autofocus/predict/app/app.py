@@ -7,7 +7,7 @@ from werkzeug import secure_filename
 
 from .model import predict_multiple, predict_single
 from .utils import allowed_file, filter_image_files, list_zip_files
-
+from .models import File
 from .requests import PredictRequestValidator, PredictZipRequestValidator
 
 # We are going to upload the files to the server as part of the request, so set tmp folder here.
@@ -26,22 +26,15 @@ def classify_single():
     if not validator.validate():
         validator.abort()
 
-    file = request.files["file"]
-    filename = secure_filename(file.filename)
+    file = File(request.files["file"])
 
-    file_path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
-    # this isn't super-optimal since it's saving the file to the server
-    file.save(file_path)
-
-    app.logger.info("Classifying image %s" % (file_path))
+    app.logger.info("Classifying image %s" % (file.getPath()))
 
     # Get the predictions (output of the softmax) for this image
     t = time.time()
-    predictions = predict_single(file_path)
+    predictions = predict_single(file.getPath())
     dt = time.time() - t
     app.logger.info("Execution time: %0.2f" % (dt * 1000.0))
-
-    os.remove(file_path)
 
     return jsonify(predictions)
 
