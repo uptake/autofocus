@@ -8,6 +8,8 @@ from werkzeug import secure_filename
 from .model import predict_multiple, predict_single
 from .utils import allowed_file, filter_image_files, list_zip_files
 
+from .requests import PredictRequestValidator
+
 # We are going to upload the files to the server as part of the request, so set tmp folder here.
 UPLOAD_FOLDER = "/tmp/"
 ALLOWED_EXTENSIONS = set(["png", "jpg", "jpeg", "gif", "bmp"])
@@ -17,37 +19,31 @@ app.config.from_object(__name__)
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
 
-@app.route("/predict", methods=["GET", "POST"])
+@app.route("/predict", methods=["POST"])
 def classify_single():
     """Classify a single image"""
-    if request.method == "POST":
-        file = request.files["file"]
+    validator = PredictRequestValidator(request)
+    if(not validator.validate()):
+        validator.abort()
 
-        if not file:
-            return "No file sent."
+    file = request.files["file"]
+    filename = secure_filename(file.filename)
 
-        filename = secure_filename(file.filename)
+    file_path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
+    # this isn't super-optimal since it's saving the file to the server
+    file.save(file_path)
 
-        if allowed_file(filename, ALLOWED_EXTENSIONS):
-            file_path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
-            # this isn't super-optimal since it's saving the file to the server
-            file.save(file_path)
+    app.logger.info("Classifying image %s" % (file_path))
 
-            app.logger.info("Classifying image %s" % (file_path))
+    # Get the predictions (output of the softmax) for this image
+    t = time.time()
+    predictions = predict_single(file_path)
+    dt = time.time() - t
+    app.logger.info("Execution time: %0.2f" % (dt * 1000.0))
 
-            # Get the predictions (output of the softmax) for this image
-            t = time.time()
-            predictions = predict_single(file_path)
-            dt = time.time() - t
-            app.logger.info("Execution time: %0.2f" % (dt * 1000.0))
+    os.remove(file_path)
 
-            os.remove(file_path)
-
-            return jsonify(predictions)
-        else:
-            return "File type not allowed. File must be of type {allowed}".format(
-                allowed=ALLOWED_EXTENSIONS
-            )
+    return jsonify(predictions)
 
 
 @app.route("/predict_zip", methods=["GET", "POST"])
