@@ -1,8 +1,21 @@
-from . import Validator, ALLOWED_ZIP_FILES
+from . import ALLOWED_ZIP_FILES, Validator
 from ..utils import allowed_file
 
+
 class PredictZipRequestValidator(Validator):
+    """
+    Validate request for endpoint predict_zip
+    """
+
     def validate(self):
+        """
+        Validate the given request
+
+        Check if the request has a file and the extension is ".zip".
+
+        Returns:
+            boolean: True if the request is valid
+        """
         self.error = {}
 
         file = self.request.files.get('file', None)

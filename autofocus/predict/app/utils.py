@@ -1,5 +1,4 @@
 from pathlib import Path
-from zipfile import ZipFile
 
 
 def allowed_file(filename, allowed_extensions):

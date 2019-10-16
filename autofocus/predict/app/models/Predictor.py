@@ -1,22 +1,44 @@
-import time
 from pathlib import Path
+
 from fastai.vision import load_learner, open_image
 
-from ..model import predict_single
 
 MODEL_DIR = Path(__file__).resolve().parents[2] / "models"
 MODEL_NAME = "multilabel_model_20190407.pkl"
 model = load_learner(MODEL_DIR, MODEL_NAME)
 CLASSES = model.data.classes
 
+
 class Predictor:
+    """
+    Predicts probabilities with the model based on given files
+
+    Parameters:
+        probabilities: Array of probabilities calculated in predict
+    """
+
     def predict(self, file):
+        """
+        Predict probabilities of single file
+
+        Parameters:
+            file: File object of image file
+        """
         image = open_image(file.getPath())
         # Get the predictions (output of the softmax) for this image
         pred_classes, preds, probs = model.predict(image)
         self.probabilities = [prob.item() for prob in probs]
 
     def predict_multiple(self, files):
+        """
+        Predict probabilities of multiple files
+
+        Parameters:
+            files: Dict with File objects of image file
+        
+        Returns:
+            dict: Dictionary of probabilities for each file in files
+        """
         predictions = {}
         for key in files:
             self.predict(files[key])
@@ -25,4 +47,10 @@ class Predictor:
 
 
     def getProbabilities(self):
+        """
+        Return formated Probabilities
+
+        Returns:
+            dict: A dictionary of classes to probabilities
+        """
         return dict(zip(CLASSES, self.probabilities))

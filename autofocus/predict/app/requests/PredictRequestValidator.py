@@ -1,8 +1,21 @@
-from . import Validator, ALLOWED_IMAGE_FILES
+from . import ALLOWED_IMAGE_FILES, Validator
 from ..utils import allowed_file
 
+
 class PredictRequestValidator(Validator):
+    """
+    Validate request for endpoint predict
+    """
+
     def validate(self):
+        """
+        Validate the given request
+
+        Check if the request has a file and the extension is an allowed image extension.
+
+        Returns:
+            boolean: True if the request is valid
+        """
         self.error = {}
 
         file = self.request.files.get('file', None)
