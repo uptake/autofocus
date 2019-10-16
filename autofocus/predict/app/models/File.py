@@ -1,6 +1,5 @@
 import os
 from werkzeug import secure_filename
-from ..app import app
 
 
 class File:
@@ -12,7 +11,7 @@ class File:
         name: Secured filename (Can be empty)
     """
 
-    def __init__(self, file=None):
+    def __init__(self, file=None, upload_path=None):
         """
         Constructor of File
 
@@ -20,9 +19,10 @@ class File:
 
         Parameters:
             file: Uploaded file object from flask
+            upload_path: The path to upload the file
         """
         if file:
-            self.setFromUploadedFile(file)
+            self.setFromUploadedFile(file, upload_path)
 
     def __del__(self):
         """
@@ -32,15 +32,18 @@ class File:
         """
         os.remove(self.path)
 
-    def setFromUploadedFile(self, file):
+    def setFromUploadedFile(self, file, upload_path=None):
         """
         Save file from uploaded file
 
         Parameters:
             file: Uploaded file object from flask
+            upload_path: The path to upload the file
         """
         self.name = secure_filename(file.filename)
-        self.path = os.path.join(app.config["UPLOAD_FOLDER"], self.name)
+        self.path = self.name
+        if upload_path:
+            self.path = os.path.join(upload_path, self.path)
         file.save(self.path)
 
     def setPath(self, path):

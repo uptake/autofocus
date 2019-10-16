@@ -3,6 +3,10 @@ from flask import abort, jsonify, make_response
 from flask_api import status
 
 
+ALLOWED_IMAGE_FILES = set(["png", "jpg", "jpeg", "gif", "bmp"])
+ALLOWED_ZIP_FILES = {"zip"}
+
+
 class Validator(ABC):
     """
     Validate given request

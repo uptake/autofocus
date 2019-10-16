@@ -1,4 +1,4 @@
-from . import ALLOWED_ZIP_FILES, Validator
+from .Validator import ALLOWED_ZIP_FILES, Validator
 from ..utils import allowed_file
 
 
