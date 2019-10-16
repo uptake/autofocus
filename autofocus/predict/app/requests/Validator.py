@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+
 from flask import abort, jsonify, make_response
 from flask_api import status
 
@@ -48,15 +49,12 @@ class Validator(ABC):
             dict: The errors found during validation
         """
         return self.error
-    
+
     def abort(self):
-        """
-        Abort with errors
-        """
-        abort(make_response(
-            jsonify(
-                status=status.HTTP_400_BAD_REQUEST,
-                error=self.getError()
-            ),
-            status.HTTP_400_BAD_REQUEST
-        ))
+        """Abort with errors"""
+        abort(
+            make_response(
+                jsonify(status=status.HTTP_400_BAD_REQUEST, error=self.getError()),
+                status.HTTP_400_BAD_REQUEST,
+            )
+        )

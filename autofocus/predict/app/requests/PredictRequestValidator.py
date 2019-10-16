@@ -3,9 +3,7 @@ from ..utils import allowed_file
 
 
 class PredictRequestValidator(Validator):
-    """
-    Validate request for endpoint predict
-    """
+    """Validate request for endpoint predict"""
 
     def validate(self):
         """
@@ -18,11 +16,13 @@ class PredictRequestValidator(Validator):
         """
         self.error = {}
 
-        file = self.request.files.get('file', None)
+        file = self.request.files.get("file", None)
         if not file:
-            self.error['file'] = "No file given."
+            self.error["file"] = "No file given."
         elif not allowed_file(file.filename, ALLOWED_IMAGE_FILES):
-            self.error['file'] = "File type not allowed. File must be of type {allowed}".format(
+            self.error[
+                "file"
+            ] = "File type not allowed. File must be of type {allowed}".format(
                 allowed=ALLOWED_IMAGE_FILES
             )
 

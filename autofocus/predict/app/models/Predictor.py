@@ -35,7 +35,7 @@ class Predictor:
 
         Parameters:
             files: Dict with File objects of image file
-        
+
         Returns:
             dict: Dictionary of probabilities for each file in files
         """
@@ -44,7 +44,6 @@ class Predictor:
             self.predict(files[key])
             predictions[key] = self.getProbabilities()
         return predictions
-
 
     def getProbabilities(self):
         """

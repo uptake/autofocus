@@ -1,5 +1,6 @@
 import os
 from zipfile import ZipFile
+
 from .File import File
 from ..requests.Validator import ALLOWED_IMAGE_FILES
 from ..utils import allowed_file
@@ -46,7 +47,7 @@ class ZipArchive:
 
         Parameters:
             extensions: Array of allowed image extensions
-        
+
         Returns:
             array: Array of filenames matching the extension
         """
@@ -58,7 +59,7 @@ class ZipArchive:
 
         Parameters:
             extensions: Array of allowed image extensions
-        
+
         Returns:
             boolean: True if zip has images
         """
@@ -74,9 +75,9 @@ class ZipArchive:
         Parameters:
             path: Path to store files
             members: Files to extract
-        
+
         Returns:
-            array: Array of extracted File objects 
+            array: Array of extracted File objects
         """
         self.zip.extractall(path, members)
         extractedFiles = {}

@@ -49,7 +49,7 @@ def classify_zip():
 
     file = ZipArchive(request.files["file"], app.config["UPLOAD_FOLDER"])
     if not file.hasImages():
-        validator.error['file'] = "No image files detected in the zip file."
+        validator.error["file"] = "No image files detected in the zip file."
         validator.abort()
 
     # Extract files
