@@ -1,3 +1,4 @@
+import mimetypes
 import os
 import time
 from zipfile import ZipFile
@@ -10,7 +11,9 @@ from .utils import allowed_file, filter_image_files, list_zip_files
 
 # We are going to upload the files to the server as part of the request, so set tmp folder here.
 UPLOAD_FOLDER = "/tmp/"
-ALLOWED_EXTENSIONS = set(["png", "jpg", "jpeg", "gif", "bmp"])
+ALLOWED_EXTENSIONS = set(
+    k for k, v in mimetypes.types_map.items() if v.startswith("image/")
+)
 
 app = Flask(__name__)
 app.config.from_object(__name__)
