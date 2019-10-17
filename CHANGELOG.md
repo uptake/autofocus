@@ -3,6 +3,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
+# [1.2.4] - 2019-10-13
+### Changed
+ - Service gets image file extensions from `mimetypes` instead of using a hard-coded list.
+
 # [1.2.3] - 2019-8-22
 ### Changed
  - Tests and instructions now refer to "localhost" instead of "0.0.0.0".
