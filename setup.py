@@ -31,6 +31,6 @@ setup(
     extras_require={"dev": regular_packages + dev_packages},
     author="Greg Gandenberger",
     author_email="gsganden@gmail.com",
-    url="https://github.com/UptakeOpenSource/autofocus",
+    url="https://github.com/uptake/autofocus",
     long_description_content_type="text/markdown",
 )
