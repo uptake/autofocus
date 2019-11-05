@@ -3,11 +3,11 @@ import time
 from flask import Flask, jsonify, request
 
 from .models.File import File
-from .models.Predictor import Predictor
 from .models.ZipArchive import ZipArchive
 from .validation.predict import validate_predict_request
 from .validation.predict_zip import validate_predict_zip_request
 from .validation.validation import abort_with_errors
+from .prediction.prediction import predict, predict_multiple
 
 
 # We are going to upload the files to the server as part of the request, so set tmp folder here.
@@ -27,16 +27,8 @@ def classify_single():
     # Get File object
     file = File(request.files["file"], app.config["UPLOAD_FOLDER"])
 
-    # Predict probabilities
-    app.logger.info("Classifying image %s" % (file.getPath()))
-    t = time.time()
-    predictor = Predictor()
-    predictor.predict(file)
-    dt = time.time() - t
-    app.logger.info("Execution time: %0.2f" % (dt * 1000.0))
-
     # Return ziped probabilities
-    return jsonify(predictor.getProbabilities())
+    return jsonify(predict(file))
 
 
 @app.route("/predict_zip", methods=["POST"])
@@ -56,8 +48,7 @@ def classify_zip():
     files = file.extractAll(app.config["UPLOAD_FOLDER"], file.listAllImages())
 
     # Make prediction
-    predictor = Predictor()
-    return jsonify(predictor.predict_multiple(files))
+    return jsonify(predict_multiple(files))
 
 
 @app.route("/hello")
