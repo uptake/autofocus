@@ -5,7 +5,8 @@ from werkzeug import secure_filename
 
 UPLOAD_FOLDER = "/tmp/"
 
-class File:
+
+class TemporaryFile:
     """
     Store a file and remove it upon destruction
 

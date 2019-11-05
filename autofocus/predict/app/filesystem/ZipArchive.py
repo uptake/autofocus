@@ -1,7 +1,7 @@
 import os
 from zipfile import ZipFile
 
-from .File import File, UPLOAD_FOLDER
+from .TemporaryFile import TemporaryFile, UPLOAD_FOLDER
 from ..validation.validation import allowed_file, ALLOWED_IMAGE_FILES
 
 
@@ -26,7 +26,7 @@ class ZipArchive:
             file: Uploaded file from flask
             upload_folder: The folder to save the zip file
         """
-        self.file = File(file)
+        self.file = TemporaryFile(file)
         self.zip = ZipFile(self.file.getPath())
 
     def listFiles(self):
@@ -81,7 +81,7 @@ class ZipArchive:
         self.zip.extractall(path, members)
         extractedFiles = {}
         for member in members:
-            file = File()
+            file = TemporaryFile()
             file.setPath(os.path.join(path, member))
             extractedFiles[member] = file
         return extractedFiles

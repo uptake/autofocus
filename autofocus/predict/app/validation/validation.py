@@ -20,6 +20,7 @@ def abort_with_errors(error):
         )
     )
 
+
 def allowed_file(filename, allowed_extensions):
     """
     Check for whether a filename is in the ALLOWED_EXTENSIONS

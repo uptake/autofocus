@@ -24,6 +24,7 @@ def predict_multiple(files):
         predictions[key] = predict(files[key])
     return predictions
 
+
 def predict(file):
     """
     Predict probabilities of single file
@@ -35,6 +36,7 @@ def predict(file):
     # Get the predictions (output of the softmax) for this image
     pred_classes, preds, probs = model.predict(image)
     return getProbabilities([prob.item() for prob in probs])
+
 
 def getProbabilities(probabilities):
     """

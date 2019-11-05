@@ -1,4 +1,5 @@
-from .validation import abort_with_errors, ALLOWED_ZIP_FILES, allowed_file
+from .validation import abort_with_errors, allowed_file, ALLOWED_ZIP_FILES
+
 
 def validate_predict_zip_request(request):
     """
@@ -15,9 +16,7 @@ def validate_predict_zip_request(request):
     if not file:
         error["file"] = "No file given."
     elif not allowed_file(file.filename, ALLOWED_ZIP_FILES):
-        error[
-            "file"
-        ] = "File type not allowed. File must be of type {allowed}".format(
+        error["file"] = "File type not allowed. File must be of type {allowed}".format(
             allowed=ALLOWED_ZIP_FILES
         )
 
