@@ -5,8 +5,10 @@ from flask import Flask, jsonify, request
 from .models.File import File
 from .models.Predictor import Predictor
 from .models.ZipArchive import ZipArchive
-from .requests.PredictRequestValidator import PredictRequestValidator
-from .requests.PredictZipRequestValidator import PredictZipRequestValidator
+from .validation.predict import validate_predict_request
+from .validation.predict_zip import validate_predict_zip_request
+from .validation.validation import abort_with_errors
+
 
 # We are going to upload the files to the server as part of the request, so set tmp folder here.
 UPLOAD_FOLDER = "/tmp/"
@@ -20,9 +22,7 @@ app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 def classify_single():
     """Classify a single image"""
     # Validate request
-    validator = PredictRequestValidator(request)
-    if not validator.validate():
-        validator.abort()
+    validate_predict_request(request)
 
     # Get File object
     file = File(request.files["file"], app.config["UPLOAD_FOLDER"])
@@ -43,14 +43,14 @@ def classify_single():
 def classify_zip():
     """Classify all images from a zip file"""
     # Validate request
-    validator = PredictZipRequestValidator(request)
-    if not validator.validate():
-        validator.abort()
+    validate_predict_zip_request(request)
 
     file = ZipArchive(request.files["file"], app.config["UPLOAD_FOLDER"])
     if not file.hasImages():
-        validator.error["file"] = "No image files detected in the zip file."
-        validator.abort()
+        error = {
+            "file": "No image files detected in the zip file."
+        }
+        abort_with_errors(error)
 
     # Extract files
     files = file.extractAll(app.config["UPLOAD_FOLDER"], file.listAllImages())

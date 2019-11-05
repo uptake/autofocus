@@ -2,8 +2,7 @@ import os
 from zipfile import ZipFile
 
 from .File import File
-from ..requests.Validator import ALLOWED_IMAGE_FILES
-from ..utils import allowed_file
+from ..validation.validation import allowed_file, ALLOWED_IMAGE_FILES
 
 
 class ZipArchive:
