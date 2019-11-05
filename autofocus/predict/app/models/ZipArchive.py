@@ -1,7 +1,7 @@
 import os
 from zipfile import ZipFile
 
-from .File import File
+from .File import File, UPLOAD_FOLDER
 from ..validation.validation import allowed_file, ALLOWED_IMAGE_FILES
 
 
@@ -16,7 +16,7 @@ class ZipArchive:
         zip: Opened zip file
     """
 
-    def __init__(self, file, upload_folder=None):
+    def __init__(self, file):
         """
         Constructor of ZipFile
 
@@ -26,7 +26,7 @@ class ZipArchive:
             file: Uploaded file from flask
             upload_folder: The folder to save the zip file
         """
-        self.file = File(file, upload_folder)
+        self.file = File(file)
         self.zip = ZipFile(self.file.getPath())
 
     def listFiles(self):
@@ -64,7 +64,7 @@ class ZipArchive:
         """
         return len(self.listAllImages(extensions)) > 0
 
-    def extractAll(self, path=None, members=None):
+    def extractAll(self, path=UPLOAD_FOLDER, members=None):
         """
         Extract all the given files
 

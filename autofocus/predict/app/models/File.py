@@ -3,6 +3,8 @@ import os
 from werkzeug import secure_filename
 
 
+UPLOAD_FOLDER = "/tmp/"
+
 class File:
     """
     Store a file and remove it upon destruction
@@ -12,7 +14,7 @@ class File:
         name: Secured filename (Can be empty)
     """
 
-    def __init__(self, file=None, upload_path=None):
+    def __init__(self, file=None, upload_path=UPLOAD_FOLDER):
         """
         Constructor of File
 
@@ -22,6 +24,7 @@ class File:
             file: Uploaded file object from flask
             upload_path: The path to upload the file
         """
+        self.upload_folder = upload_path
         if file:
             self.setFromUploadedFile(file, upload_path)
 
