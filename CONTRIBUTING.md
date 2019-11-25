@@ -4,7 +4,7 @@
 
 By participating in this project you agree to abide by its [code of conduct](./CONDUCT.md).
 
-If you have a problem using Autofocus or see a possible improvement, please open an issue on GitHub. Be as specific as you can.
+If you have a problem using `autofocus` or see a possible improvement, please open an issue on GitHub. Be as specific as you can.
 
 If you see an issue that you would like to address, please open a pull request.
 
