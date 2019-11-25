@@ -8,6 +8,8 @@ If you have a problem using `autofocus` or see a possible improvement, please op
 
 If you see an issue that you would like to address, please open a pull request.
 
+This project is a volunteer effort, so it might take up to a few weeks to review a complex PR. I promise that I will get to it, but I cannot promise that it will be fast!
+
 ## Steps for Making a Pull Request
 
 1. Fork the project from GitHub.
