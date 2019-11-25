@@ -11,7 +11,7 @@ If you see an issue that you would like to address, please open a pull request.
 ## Steps for Making a Pull Request
 
 1. Fork the project from GitHub.
-2. Clone the forked repo to your local disk. 
+2. Clone the forked repo.
 
 ```bash
 git clone https://github.com/<your_github_user_name>/autofocus.git
