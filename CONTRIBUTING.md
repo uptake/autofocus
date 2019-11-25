@@ -2,13 +2,11 @@
 
 ## How to Contribute
 
-We welcome contributions in the form of issues or pull requests!
+By participating in this project you agree to abide by its [code of conduct](./CONDUCT.md).
 
-We want this to be a place where all are welcome to discuss and contribute, so please note that this project is released with a Contributor Code of Conduct. By participating in this project you agree to abide by its terms. Find the code of conduct in the ``CONDUCT.md`` file on GitHub.
+If you have a problem using Autofocus or see a possible improvement, please open an issue on GitHub. Be as specific as you can.
 
-If you have a problem using Autofocus or see a possible improvement, open an issue in the GitHub issue tracker. Please be as specific as you can.
-
-If you see an open issue you'd like to be fixed, take a stab at it and open a PR!
+If you see an issue that you would like to address, please open a pull request.
 
 ## Steps for Making a Pull Request
 
@@ -26,6 +24,7 @@ git clone https://github.com/<your_github_user_name>/autofocus.git
 git checkout -b my_awesome_new_feature
 ```
 
-5. Make your changes.
-6. Complete all items in the [pull request checklist](https://github.com/uptake/autofocus/blob/master/.github/pull_request_template.md) that you feel comfortable with. Feel free to submit a PR with some loose ends, particularly if you are not sure about how to complete a checklist item.
-7. Submit your PR against the `dev` branch.
+5. Open a pull request so that we know you are working on the issue and can start a discussion.
+6. Make your changes.
+7. Complete all items in the [pull request checklist](https://github.com/uptake/autofocus/blob/master/.github/pull_request_template.md) that you feel comfortable with. Let us know if there are any items in the checklist that you do not know how to complete.
+8. Submit your PR against the `dev` branch.
