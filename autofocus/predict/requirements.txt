@@ -2,3 +2,4 @@ Flask
 gunicorn
 numpy
 pillow
+fastai
