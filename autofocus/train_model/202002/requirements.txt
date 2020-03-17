@@ -1,7 +1,5 @@
---index-url=https://artifactory.k8s.devops.s-9.us/artifactory/api/pypi/pypi/simple
-
 black
-fastai
+fastai==1.0.59
 fastprogress
 fire
 flake8
@@ -12,10 +10,11 @@ jupyterlab
 mlflow
 nb_black
 pandas
+pillow<7
 pyarrow
 s3fs
 tensorboardX
-torch
-torchtext
-torchvision
+torch==1.3.1
+torchtext==0.4.0
+torchvision==0.2.1
 tqdm>=4.33.0

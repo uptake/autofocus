@@ -1,5 +1,5 @@
 FROM nvcr.io/nvidia/pytorch:19.10-py3
-LABEL maintainer="data-science@shoprunner.com"
+LABEL maintainer="gsganden@gmail.com"
 
 # Installing big dependencies early so we don't have to install them
 # again every time requirements change

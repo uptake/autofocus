@@ -92,34 +92,33 @@ The model described above was trained on a set of images provided by the Lincoln
 
 If necessary, create an AWS account, install the AWS CLI tool (`pip install awscli`), and set up your AWS config and credentials (`aws configure`). All of the commands below are written to run from the repo root.
 
-Use this commend to download a preprocessed version of the Lincoln Park Zoo 2016-2017 dataset to `autofocus/data/` (you can change the destination directory if you like):
+Create an environment variable `AUTOFOCUS_DATA_DIR` that specifies where you wish to store the data. For instance:
+
+```bash
+export AUTOFOCUS_DATA_DIR=/home/ec2-user/repos/autofocus/data/
+```
+
+You can put the data somewhere else if you wish, such as in a centralized data directory or on a mounted volume. You may wish to add this command to your `~/.bashrc` or equivalent.
+
+Next, run the following commands to download the data for 2016 and 2017:
 
 ```bash
 FILENAME=lpz_2016_2017_processed.tar.gz
-aws s3 cp s3://autofocus/lpz_data/${FILENAME} $(pwd)/data/
+mkdir -p $AUTOFOCUS_DATA_DIR
+aws s3 cp s3://autofocus/lpz_data/${FILENAME} $AUTOFOCUS_DATA_DIR
+mkdir $AUTOFOCUS_DATA_DIR/lpz_2016_2017/
+tar -xvf $AUTOFOCUS_DATA_DIR/${FILENAME} -C $AUTOFOCUS_DATA_DIR/lpz_2016_2017/
+rm $AUTOFOCUS_DATA_DIR/${FILENAME}
 ```
 
-Unpack the tarfile:
+Finally, run the following commands to download the data for 2012 and 2014:
 
 ```bash
-mkdir $(pwd)/data/lpz_2016_2017/
-tar -xvf $(pwd)/data/${FILENAME} -C $(pwd)/data/lpz_2016_2017/
-```
-
-Delete the tarfile:
-
-```bash
-rm $(pwd)/data/${FILENAME}
-```
-
-This dataset contains approximately 80,000 images and a CSV of labels and image metadata. It occupies 17.1GB uncompressed, so you will need about 40GB free for the downloading and untarring process. The images have been preprocessed by trimming the bottom 198 pixels (which often contains a metadata footer that could only mislead a machine learning model) and resizing to be 512 pixels along their shorter dimension. In addition, the labels have been cleaned up and organized.
-
-If you would like to work with data that has not been preprocessed as described above, replace `FILENAME=lpz_2016_2017_processed.tar.gz` with `FILENAME=data_2016_2017.tar.gz`. You will need to have about 100GB free to download and untar the raw data. `autofocus/build_dataset/lpz_2016_2017/process_raw.py` contains the code that was used to generate the processed data from the raw data.
-
-A second dataset from the Lincoln Park Zoo's Urban Wildlife Institute contains approximately 75,000 images (227 x 227 pixels) and a CSV of labels and image metadata from the Chicago area in 2012-2014. It takes up 7.9GB uncompressed. To get this data, follow the same steps as for the 2016-2017 dataset, but replace `FILENAME=lpz_2016_2017_processed.tar.gz` with `FILENAME=lpz_2012-2014.tar.gz`, and use this command to unpack the tarfile.
-
-```bash
-tar -xvf $(pwd)/data/${FILENAME} -C $(pwd)/data/
+FILENAME=lpz_2012-2014.tar.gz
+mkdir -p $AUTOFOCUS_DATA_DIR
+aws s3 cp s3://autofocus/lpz_data/${FILENAME} $AUTOFOCUS_DATA_DIR
+tar -xvf $AUTOFOCUS_DATA_DIR/${FILENAME} -C $AUTOFOCUS_DATA_DIR
+rm $AUTOFOCUS_DATA_DIR/${FILENAME}
 ```
 
 A third dataset from the Lincoln Park Zoo's Urban Wildlife Institute contains unlabeled three-image bursts from 2018. It takes up 5.7GB uncompressed. To get this data, follow the same steps as for the 2012-2014 dataset, but replace `FILENAME=lpz_2016_2017_processed.tar.gz` with `FILENAME=lpz_2018.tar.gz`.
