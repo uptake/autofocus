@@ -4,7 +4,7 @@ from fastai.vision import load_learner, open_image
 
 
 MODEL_DIR = Path(__file__).resolve().parents[1] / "models"
-MODEL_NAME = "multilabel_model_20190407.pkl"
+MODEL_NAME = "multilabel_model_20200603.pkl"
 model = load_learner(MODEL_DIR, MODEL_NAME)
 CLASSES = model.data.classes
 
