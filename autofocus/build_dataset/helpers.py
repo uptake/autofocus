@@ -99,8 +99,6 @@ def has_channels_equal(image: np.array) -> bool:
     """
     first_channel = image[..., 0]
     return all(
-        [
-            np.equal(image[..., channel_num], first_channel).all()
-            for channel_num in range(1, image.shape[-1])
-        ]
+        np.equal(image[..., channel_num], first_channel).all()
+        for channel_num in range(1, image.shape[-1])
     )
