@@ -2,12 +2,12 @@ name: Automate Docker Image Build and Push
 
 on:
   push:
-    branches: automate-image-build
+    branches: master
 
 env:
   IMAGE_NAME: autofocus-serve
   DOCKERFILE_DIR: autofocus/predict
-  DOCKERHUB_USER: davidwilby
+  DOCKERHUB_USER: gsganden
 
 jobs:
   main:
