@@ -1,5 +1,5 @@
 FROM continuumio/miniconda3
-MAINTAINER data-science@shoprunner.com
+LABEL maintainer="data-science@shoprunner.com"
 USER root
 
 RUN apt-get update -qq \
@@ -14,7 +14,7 @@ RUN conda install pytorch=1.0.1 torchvision -c pytorch \
 COPY . /image_api
 WORKDIR /image_api
 
-RUN python -m pip install -r /image_api/requirements.txt
+RUN python -m pip install -r requirements.txt
 
 EXPOSE 8000
 CMD ["gunicorn", "--bind", "0.0.0.0:8000", "app.app:app" ]

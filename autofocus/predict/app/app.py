@@ -4,7 +4,7 @@ import time
 from zipfile import ZipFile
 
 from flask import Flask, jsonify, make_response, request
-from werkzeug import secure_filename
+from werkzeug.utils import secure_filename
 
 from .model import predict_multiple, predict_single
 from .utils import allowed_file, filter_image_files, list_zip_files
