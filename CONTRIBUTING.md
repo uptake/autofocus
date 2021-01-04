@@ -1,5 +1,7 @@
 # Contributing
 
+I am still accepting PRs, but resources for using a new model are currently lacking, so contributions to this repo will not have an immediate impact.
+
 ## How to Contribute
 
 By participating in this project you agree to abide by its [code of conduct](./CONDUCT.md).
