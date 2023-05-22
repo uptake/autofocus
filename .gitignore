@@ -93,3 +93,7 @@ ENV/
 
 # Image files
 **/*.JPG
+
+# Some R stuff
+.Rproj.user
+*.Rproj
